@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Groove Platforms — Case Study · Annie Medinus</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500&family=Work+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#FFFFFF; --ink:#15140F; --line:#DEDACF; --muted:#7A7568; --accent:#E8402C;
+    --groove:#7C3AED;
+    box-sizing:border-box;
+    padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+  }
+  *{box-sizing:inherit; margin:0; padding:0;}
+  html{scroll-behavior:smooth; scroll-padding-top:env(safe-area-inset-top,0px);}
+  body{background:var(--paper); color:var(--ink); font-family:'Work Sans',sans-serif; font-weight:400; opacity:0; transition:opacity .6s ease;}
+  body.ready{opacity:1;}
+  h1,h2,h3{font-family:'Fraunces',serif; letter-spacing:-0.02em;}
+  a{color:inherit; text-decoration:none;}
+  img{max-width:100%; display:block;}
+  .wrap{max-width:1100px; margin:0 auto; padding:0 24px;}
+  @media(max-width:640px){.wrap{padding:0 18px;}}
+  section{padding:60px 0; border-top:1px solid var(--line);}
+  .label{font-size:13px; color:var(--muted); margin-bottom:18px; text-transform:uppercase; letter-spacing:.08em;}
+
+  /* NAV */
+  nav{position:sticky; top:0; z-index:50; background:rgba(255,255,255,0.92); backdrop-filter:blur(6px); padding-top:env(safe-area-inset-top,0px);}
+  .nav-row{display:flex; align-items:center; justify-content:space-between; height:64px;}
+  .logo{font-family:'Fraunces',serif; font-size:20px;}
+  .nav-links{display:flex; gap:28px; font-size:14px;}
+  .nav-links a:hover{color:var(--groove);}
+  .nav-icons{display:flex; gap:10px;}
+  .icon-btn{width:32px; height:32px; border:1px solid var(--line); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:600; transition:all .2s;}
+  .icon-btn:hover{border-color:var(--ink); background:var(--ink); color:var(--paper);}
+  .nav-links{display:none;}
+  @media(min-width:760px){.nav-links{display:flex;} }
+
+  .back-link{display:inline-flex; align-items:center; gap:8px; font-size:13px; color:var(--muted); margin-bottom:22px; transition:color .2s;}
+  .back-link:hover{color:var(--ink);}
+
+  /* HERO */
+  .case-hero{padding:36px 0 30px; border-top:none;}
+  .case-hero h1{font-size:clamp(30px,4.6vw,52px); line-height:1.18; max-width:800px; margin-bottom:14px; text-wrap:balance; font-weight:500;}
+  .case-hero h1 em{color:var(--groove); font-style:italic;}
+  .case-meta{font-size:14px; color:var(--muted); margin-bottom:22px;}
+  .case-meta b{color:var(--ink); font-weight:600;}
+  .tag-row{display:flex; flex-wrap:wrap; gap:8px; margin-bottom:34px;}
+  .tag-pill{font-size:12px; font-weight:600; color:#fff; background:var(--ink); border-radius:100px; padding:7px 14px;}
+  .tag-pill.accent{background:var(--groove);}
+
+  /* CLIENT OVERVIEW */
+  .overview-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:28px; margin-bottom:34px;}
+  @media(max-width:760px){.overview-grid{grid-template-columns:1fr; gap:20px;}}
+  .overview-item .k{font-size:12px; color:var(--muted); text-transform:uppercase; letter-spacing:.06em; margin-bottom:6px;}
+  .overview-item .v{font-size:16px; font-weight:600;}
+  .brief p{font-size:16px; line-height:1.75; color:var(--ink); max-width:760px; margin-bottom:16px;}
+  .goals{margin-top:24px; display:grid; grid-template-columns:repeat(2,1fr); gap:12px 28px;}
+  @media(max-width:640px){.goals{grid-template-columns:1fr;}}
+  .goal-item{display:flex; gap:10px; font-size:14.5px; line-height:1.6;}
+  .goal-item svg{flex-shrink:0; margin-top:3px; color:var(--groove);}
+  .goal-item b{font-weight:600;}
+
+  /* STRATEGY BLOCKS */
+  .strat-item{display:grid; grid-template-columns:0.85fr 1fr; gap:40px; align-items:start; padding:44px 0; border-top:1px solid var(--line);}
+  .strat-item:first-of-type{border-top:none; padding-top:8px;}
+  @media(max-width:860px){.strat-item{grid-template-columns:1fr; gap:24px;}}
+  .strat-item.full{grid-template-columns:1fr;}
+  .strat-num{font-family:'Fraunces',serif; font-style:italic; font-size:14px; color:var(--groove); margin-bottom:8px; display:block;}
+  .strat-item h3{font-size:clamp(19px,2.4vw,24px); margin-bottom:12px; line-height:1.25;}
+  .strat-item p{font-size:15px; line-height:1.75; color:var(--ink);}
+  .strat-visual{display:flex; flex-direction:column; gap:16px;}
+  .strat-visual-row{display:flex; gap:14px;}
+  .strat-visual-row > div{flex:1; min-width:0;}
+  .stat-inline{display:inline-block; font-family:'Fraunces',serif; font-weight:600; color:var(--groove); font-size:15px;}
+
+  /* IMAGE PLACEHOLDERS */
+  .ph{border:1.5px dashed var(--line); border-radius:16px; background:#FAF9F5; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:22px; gap:6px; color:var(--muted); min-height:160px; width:100%;}
+  .ph svg{color:var(--line); margin-bottom:4px;}
+  .ph .ph-tag{font-family:'Fraunces',serif; font-style:italic; font-size:12px; color:var(--groove);}
+  .ph .ph-label{font-weight:600; color:var(--ink); font-size:13.5px;}
+  .ph .ph-note{font-size:11.5px; color:var(--muted); max-width:260px; line-height:1.5;}
+  .ph.square{aspect-ratio:1/1;}
+  .ph.wide{aspect-ratio:16/9;}
+  .ph.xwide{aspect-ratio:21/8;}
+  .ph.large{min-height:320px;}
+  .ph-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:14px;}
+  .ph-grid.cols-4{grid-template-columns:repeat(4,1fr);}
+  .ph-grid.cols-3{grid-template-columns:repeat(3,1fr);}
+  @media(max-width:640px){.ph-grid.cols-4, .ph-grid.cols-3{grid-template-columns:repeat(2,1fr);}}
+
+  /* REAL MEDIA */
+  .shot{width:100%; border-radius:16px; border:1px solid var(--line); display:block; object-fit:cover;}
+  .shot.square{aspect-ratio:1/1; object-fit:cover;}
+  .shot-video{width:100%; border-radius:16px; border:1px solid var(--line); display:block; background:#000;}
+  .hero-video{width:100%; aspect-ratio:21/8; object-fit:cover; border-radius:16px; border:1px solid var(--line); display:block; background:#000;}
+  @media(max-width:640px){.hero-video{aspect-ratio:4/3;}}
+  .shot-video-sq{width:100%; aspect-ratio:1/1; object-fit:cover; border-radius:16px; border:1px solid var(--line); display:block; background:#000;}
+
+  /* BRAND STRIP */
+  .brand-strip{display:flex; flex-wrap:wrap; align-items:center; gap:22px; margin-top:22px; padding-top:22px; border-top:1px solid var(--line);}
+  .brand-strip img{height:30px; width:auto; object-fit:contain; opacity:.85;}
+
+  /* TECH STACK */
+  .stack-grid{display:grid; grid-template-columns:repeat(5,1fr); gap:22px;}
+  @media(max-width:900px){.stack-grid{grid-template-columns:repeat(2,1fr);}}
+  @media(max-width:480px){.stack-grid{grid-template-columns:1fr;}}
+  .stack-col h4{font-size:13px; font-weight:600; text-transform:uppercase; letter-spacing:.05em; color:var(--muted); margin-bottom:12px;}
+  .stack-col ul{list-style:none; display:flex; flex-direction:column; gap:8px;}
+  .stack-col li{font-size:14px; color:var(--ink);}
+
+  /* RESULTS */
+  .results-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:22px;}
+  @media(max-width:900px){.results-grid{grid-template-columns:repeat(2,1fr);}}
+  @media(max-width:480px){.results-grid{grid-template-columns:1fr;}}
+  .result-item{border:1px solid var(--line); border-radius:16px; padding:22px;}
+  .result-item .stat{font-family:'Fraunces',serif; font-weight:600; font-size:clamp(24px,3vw,32px); color:var(--groove); margin-bottom:6px;}
+  .result-item h4{font-size:13.5px; font-weight:600; font-family:'Work Sans',sans-serif; color:var(--muted); text-transform:uppercase; letter-spacing:.04em;}
+
+  .conclusion{border-top:1px solid var(--line); padding-top:32px;}
+  .conclusion p{font-family:'Fraunces',serif; font-weight:400; font-size:clamp(18px,2.3vw,26px); line-height:1.5; color:var(--ink); text-wrap:balance; margin-bottom:20px;}
+  .conclusion p:last-child{margin-bottom:0;}
+  .conclusion b{font-weight:600; color:var(--groove); font-style:italic;}
+
+  /* NEXT / FOOTER NAV */
+  .next-case{display:flex; align-items:center; justify-content:space-between; gap:20px; flex-wrap:wrap;}
+  .next-case .n-label{font-size:12px; color:var(--muted); text-transform:uppercase; letter-spacing:.08em; margin-bottom:6px;}
+  .next-case .n-title{font-family:'Fraunces',serif; font-size:clamp(20px,3vw,28px);}
+  .next-case a{display:inline-flex; align-items:center; gap:8px; transition:gap .2s ease;}
+  .next-case a:hover{gap:13px; color:var(--groove);}
+
+  footer{border-top:1px solid var(--line); padding:36px 0; display:flex; flex-wrap:wrap; justify-content:space-between; gap:16px; font-size:13px; color:var(--muted);}
+  footer a:hover{color:var(--ink);}
+
+  @media (prefers-reduced-motion: reduce){*{animation:none !important; transition:none !important;}}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap nav-row">
+    <a class="logo" href="index.html">AM.</a>
+    <div class="nav-links">
+      <a href="about.html">About</a>
+      <a href="index.html#projects">Projects</a>
+      <a href="index.html#contact">Contact</a>
+    </div>
+    <div class="nav-icons">
+      <a class="icon-btn" href="mailto:anniemedinus@gmail.com" title="Email"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></a>
+      <a class="icon-btn" href="https://www.behance.net/anniemedinus" target="_blank" rel="noreferrer" title="Behance">Bē</a>
+      <a class="icon-btn" href="https://www.linkedin.com/in/amedinus/" target="_blank" rel="noreferrer" title="LinkedIn">in</a>
+      <a class="icon-btn" href="https://calendly.com/anniemedinus-zs_0/30min" target="_blank" rel="noreferrer" title="Calendly"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 9.5h18M8 3v4M16 3v4"/><circle cx="8.5" cy="14" r="1.2" fill="currentColor" stroke="none"/></svg></a>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="case-hero">
+  <div class="wrap">
+    <a class="back-link" href="index.html#projects">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      Back to selected work
+    </a>
+    <h1>Groove Platforms — connecting music, technology and <em>culture</em> through digital marketing.</h1>
+    <p class="case-meta"><b>Technical Digital Marketing Manager</b> · Lagos, Nigeria · Jan 2024 – Jun 2025</p>
+    <div class="tag-row">
+      <span class="tag-pill accent">Digital Growth</span>
+      <span class="tag-pill">Social Media Strategy</span>
+      <span class="tag-pill">Influencer &amp; Artist Marketing</span>
+      <span class="tag-pill">Product QA</span>
+      <span class="tag-pill">Marketing Technology</span>
+      <span class="tag-pill">Advertising</span>
+      <span class="tag-pill">Analytics</span>
+      <span class="tag-pill">Creative Direction</span>
+    </div>
+    <video class="hero-video" autoplay loop muted playsinline poster="media/groove/udux-backstage-london-poster.jpg">
+      <source src="media/groove/udux-backstage-london.mp4" type="video/mp4">
+    </video>
+    <p style="font-size:11.5px; color:var(--muted); margin-top:8px;">Backstage — uduX streaming a live show in London.</p>
+  </div>
+</header>
+
+<!-- CLIENT OVERVIEW + BRIEF -->
+<section id="overview">
+  <div class="wrap">
+    <div class="overview-grid">
+      <div class="overview-item">
+        <div class="k">Client</div>
+        <div class="v">Groove Platforms</div>
+      </div>
+      <div class="overview-item">
+        <div class="k">Industry</div>
+        <div class="v">Music technology / entertainment</div>
+      </div>
+      <div class="overview-item">
+        <div class="k">Objective</div>
+        <div class="v">Grow digital presence across Groove's products</div>
+      </div>
+    </div>
+
+    <div class="brief">
+      <p>Groove Platforms is an international music-tech company behind products including uduX, PopRev, StreamNow, Bridgetunes and other digital entertainment experiences. As Technical Digital Marketing Manager, I worked across digital growth, social media, artist campaigns, product testing, advertising technology, analytics, partnerships and creative production — operating at the intersection of music, entertainment, technology and culture, where the challenge was making digital products feel culturally relevant while still building measurable growth.</p>
+      <div class="brand-strip">
+        <img src="media/logos/udux.png" alt="uduX">
+        <img src="media/logos/poprev.png" alt="PopRev">
+        <img src="media/logos/bridgetune.png" alt="Bridgetune">
+        <img src="media/logos/streamingnow.png" alt="Streaming Now">
+      </div>
+      <p style="font-size:11.5px; color:var(--muted); margin-top:10px;">Groove Platforms is the parent company behind these products — this work spanned all four.</p>
+    </div>
+
+    <div class="goals">
+      <div class="goal-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg><span><b>Cultural moments into growth</b> — turn major moments and artist partnerships into measurable audience growth.</span></div>
+      <div class="goal-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg><span><b>Easier, more engaging products</b> — make Groove's music-tech products simpler for users to pick up.</span></div>
+      <div class="goal-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg><span><b>Measurable performance</b> — connect campaigns to real website, app and advertising results.</span></div>
+      <div class="goal-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg><span><b>Creative + technical</b> — combine cultural marketing with hands-on technical implementation.</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- STRATEGY & EXECUTION -->
+<section id="strategy">
+  <div class="wrap">
+    <span class="label">Strategy &amp; execution</span>
+
+    <div class="strat-item">
+      <div>
+        <span class="strat-num">01</span>
+        <h3>Social &amp; organic growth — building an audience around uduX</h3>
+        <p>Managed and optimized digital marketing strategy for uduX, one of Groove Platforms' music products. Through content strategy, audience engagement, campaign execution and platform optimization, the focus was on content that connected the product to the wider music and entertainment ecosystem, rather than treating uduX as just another music platform.</p>
+        <p style="margin-top:14px;"><span class="stat-inline">+45% Instagram engagement</span> · <span class="stat-inline">263 → 480+ LinkedIn followers</span><br>organic growth within two months.</p>
+      </div>
+      <div class="strat-visual">
+        <div class="strat-visual-row" style="max-width:320px;">
+          <img class="shot" style="width:153px; flex:0 0 153px; min-width:0;" src="media/groove/udux-ig-profile.jpg" alt="uduX Instagram profile — @uduxmusic, 65.8K followers, 1,365 posts">
+          <img class="shot" style="width:153px; flex:0 0 153px; min-width:0;" src="media/groove/udux-reach-analytics.jpg" alt="uduX Instagram Reach analytics — 6,706 accounts reached, followers vs non-followers">
+        </div>
+        <p style="font-size:11.5px; color:var(--muted);">The uduX Instagram — 65.8K followers — and its Reach analytics.</p>
+        <div class="strat-visual-row" style="max-width:320px; margin-top:4px;">
+          <img class="shot" style="width:320px;" src="media/groove/udux-tiktok-analytics.png" alt="uduX TikTok analytics — video views, profile views, likes, comments, shares and unique viewers over 28 days">
+        </div>
+        <p style="font-size:11.5px; color:var(--muted);">uduX TikTok — 21.6K video views and 18.2K unique viewers over 28 days.</p>
+      </div>
+    </div>
+
+    <div class="strat-item full">
+      <div>
+        <span class="strat-num">02</span>
+        <h3>Artist &amp; influencer campaigns — putting artists at the centre of the strategy</h3>
+        <p>Worked around artists, influencers and cultural personalities to create campaigns capable of generating attention beyond Groove's existing audience — supporting high-impact influencer and artist campaigns involving names such as <b style="font-weight:600;">Davido, Wizkid, Ayra Starr, Speed Darlington and Portable</b>. These campaigns connected Groove's products with audiences already deeply engaged in African music and entertainment culture.</p>
+        <p style="margin-top:14px;"><span class="stat-inline">+50% brand visibility</span> from artist-led campaigns.</p>
+      </div>
+      <div style="margin-top:24px; max-width:480px;">
+        <video class="shot-video" autoplay loop muted playsinline controls poster="media/groove/ayra-starr-udux-poster.jpg">
+          <source src="media/groove/ayra-starr-udux.mp4" type="video/mp4">
+        </video>
+        <p style="font-size:11.5px; color:var(--muted); margin-top:8px;">Ayra Starr for Groove Platforms / uduX.</p>
+      </div>
+      <div class="ph-grid cols-3" style="margin-top:14px;">
+        <div>
+          <video class="shot-video-sq" autoplay loop muted playsinline controls poster="media/groove/udux-davido-poster.jpg">
+            <source src="media/groove/udux-davido.mp4" type="video/mp4">
+          </video>
+          <p style="font-size:11px; color:var(--muted); margin-top:6px;">Davido / uduX</p>
+        </div>
+        <div>
+          <img class="shot square" src="media/groove/wizkid-mil-tour-poster.jpg" alt="Wizkid — Made In Lagos Tour rebroadcast from The O2 Arena London, uduX x MTN">
+          <p style="font-size:11px; color:var(--muted); margin-top:6px;">Wizkid / uduX x MTN</p>
+        </div>
+        <div>
+          <video class="shot-video-sq" autoplay loop muted playsinline controls poster="media/groove/ayra-starr-adesope-event-poster.jpg">
+            <source src="media/groove/ayra-starr-adesope-event.mp4" type="video/mp4">
+          </video>
+          <p style="font-size:11px; color:var(--muted); margin-top:6px;">Ayra Starr × uduX — YouTube event, with influencer Adesope</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="strat-item full">
+      <div>
+        <span class="strat-num">03</span>
+        <h3>Viral campaign — StreamNow × Live Boxing</h3>
+        <p>One of the standout campaigns was the StreamNow live boxing show featuring Speed Darlington and Portable, combining entertainment, influencer culture, live streaming and social media. The objective was a culturally relevant event that could drive conversation and audience interaction around StreamNow — increasing audience interaction, social conversation, brand visibility and cultural relevance.</p>
+      </div>
+      <div class="ph-grid cols-3" style="margin-top:20px;">
+        <video class="shot-video" style="aspect-ratio:9/16; object-fit:cover;" autoplay loop muted playsinline controls poster="media/groove/streamnow-boxing-match-poster.jpg">
+          <source src="media/groove/streamnow-boxing-match.mp4" type="video/mp4">
+        </video>
+        <img class="shot" style="aspect-ratio:9/16; object-fit:cover;" src="media/groove/streamnow-chaos-in-ring.jpg" alt="Chaos in the Ring — Portable vs Speed Darlington, StreamNow pay-per-view event page">
+        <img class="shot" style="aspect-ratio:9/16; object-fit:cover;" src="media/groove/streamnow-livestream-watch.jpg" alt="StreamNow boxing livestream playing during a watch-along call">
+      </div>
+      <p style="font-size:11.5px; color:var(--muted); margin-top:10px;">The fight itself, the "Chaos in the Ring" event page, and the livestream being watched live.</p>
+    </div>
+
+    <div class="strat-item">
+      <div>
+        <span class="strat-num">04</span>
+        <h3>Brand partnerships — collaborating with major cultural brands</h3>
+        <p>Supported partnership activations involving MTN and AfroNation, connecting Groove's products with larger entertainment and consumer audiences. A giveaway campaign under <b style="font-weight:600;">MTN × Bridgetunes</b> was designed to increase audience participation and brand visibility, while <b style="font-weight:600;">AfroNation</b> activations connected Groove to its highly engaged music audience.</p>
+        <p style="margin-top:14px;"><span class="stat-inline">+20% livestream engagement</span></p>
+      </div>
+      <div class="strat-visual">
+        <div class="ph-grid cols-3">
+          <img class="shot square" src="media/groove/udux-mtn-finals.jpg" alt="uduX x MTN — Super Eagles AFCON finals welcome party, live on uduX">
+          <img class="shot square" src="media/groove/udux-supereagles-party.jpg" alt="MTN x uduX x Nigeria Football Federation — Super Eagles Welcome Party, live on uduX">
+          <img class="shot square" src="media/groove/afronation-poster.jpg" alt="AfroNation Portugal 2024 lineup poster — Nicki Minaj, Rema, Tyla, Asake and more">
+        </div>
+        <p style="font-size:11.5px; color:var(--muted); margin-top:8px;">MTN x uduX Super Eagles activations (left, centre) and AfroNation (right).</p>
+      </div>
+    </div>
+
+    <div class="strat-item">
+      <div>
+        <span class="strat-num">05</span>
+        <h3>Product QA &amp; user experience</h3>
+        <p>Because Groove was a technology company, marketing didn't stop at the campaign — I conducted QA testing through TestFlight across products including uduX, Bridgetunes and other Groove digital experiences, testing usability, navigation, interface issues, user experience, functional inconsistencies and content presentation. That feedback fed directly into product functionality and user satisfaction improvements.</p>
+      </div>
+      <div class="strat-visual">
+        <div style="display:flex; gap:20px; align-items:flex-start; flex-wrap:wrap;">
+          <img class="shot" style="max-width:220px;" src="media/groove/udux-qa-colorscheme-bug.jpg" alt="uduX account screen showing a debug label — Color Schema: Instance of 'ColorScheme' — leaking into production">
+          <div style="flex:1; min-width:200px;">
+            <p style="font-size:14px; line-height:1.7;"><b>UX issue identified:</b> a debug label — <i>"Color Schema: Instance of 'ColorScheme'"</i> — leaking straight into the live account screen, flagged during testing and passed back to the product team.</p>
+          </div>
+        </div>
+        <div class="ph-grid cols-4" style="margin-top:20px;">
+          <div>
+            <video class="shot-video-sq" autoplay loop muted playsinline controls poster="media/groove/udux-qa-testing-poster.jpg">
+              <source src="media/groove/udux-qa-testing.mp4" type="video/mp4">
+            </video>
+          </div>
+          <img class="shot square" src="media/groove/udux-app-home-poprev.jpg" alt="uduX app home screen with a PopRev promotional banner">
+          <img class="shot square" src="media/groove/udux-website.jpg" alt="uduX streaming website — Backstage Pass to Africa's Hottest Experiences, livestreamed and on-demand">
+          <img class="shot square" src="media/groove/udux-welcome-email.jpg" alt="uduX welcome and email verification flow">
+        </div>
+        <p style="font-size:11.5px; color:var(--muted); margin-top:8px;">QA capture on the uduX app, the app home feed (with a PopRev promo), the uduX web product, and the onboarding/verification flow.</p>
+      </div>
+    </div>
+
+    <div class="strat-item full">
+      <div>
+        <span class="strat-num">06</span>
+        <h3>Marketing technology &amp; tracking — making campaigns measurable</h3>
+        <p>Implemented tracking technologies across Groove's digital ecosystem, including Google Tag Manager, Facebook Pixel, AdMob and AdSense — enabling more accurate website and app tracking, audience creation, retargeting, PPC optimization, conversion measurement and A/B testing.</p>
+        <p style="margin-top:14px;"><span class="stat-inline">+25% conversion rate</span> · <span class="stat-inline">+40% advertising ROI</span></p>
+      </div>
+    </div>
+
+    <div class="strat-item full" style="border-bottom:1px solid var(--line);">
+      <div>
+        <span class="strat-num">07</span>
+        <h3>Creative &amp; advertising — turning campaigns into creative assets</h3>
+        <p>Developed creative concepts, video edits, advertising concepts and campaign messaging built around music audiences and cultural moments, including copy for press releases, advertising campaigns, media buying, social campaigns and promotional campaigns. Used Figma for media strategy presentations and campaign planning.</p>
+      </div>
+      <div style="margin-top:20px; max-width:260px;">
+        <img class="shot square" src="media/groove/udux-thisday-article.jpg" alt="ThisDay — UduX and Music Streaming in Nigeria, press coverage">
+      </div>
+      <p style="text-align:left; margin-top:10px; font-size:11.5px; color:var(--muted);">Press coverage in ThisDay.</p>
+    </div>
+  </div>
+</section>
+
+<!-- TECH STACK -->
+<section id="stack">
+  <div class="wrap">
+    <span class="label">The technology stack</span>
+    <div class="stack-grid">
+      <div class="stack-col">
+        <h4>Analytics &amp; tracking</h4>
+        <ul><li>Google Tag Manager</li><li>Facebook Pixel</li><li>Google Analytics</li></ul>
+      </div>
+      <div class="stack-col">
+        <h4>Advertising</h4>
+        <ul><li>Google Ads</li><li>Meta Ads</li><li>AdMob</li><li>AdSense</li></ul>
+      </div>
+      <div class="stack-col">
+        <h4>Product &amp; QA</h4>
+        <ul><li>TestFlight</li></ul>
+      </div>
+      <div class="stack-col">
+        <h4>Design &amp; creative</h4>
+        <ul><li>Figma</li><li>Adobe Creative Suite</li><li>Video editing tools</li></ul>
+      </div>
+      <div class="stack-col">
+        <h4>Social &amp; content</h4>
+        <ul><li>Instagram</li><li>LinkedIn</li><li>Social media management platforms</li></ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RESULTS -->
+<section id="results">
+  <div class="wrap">
+    <span class="label">Results &amp; impact</span>
+    <div class="results-grid">
+      <div class="result-item"><div class="stat">+45%</div><h4>Instagram engagement</h4></div>
+      <div class="result-item"><div class="stat">263→480+</div><h4>LinkedIn followers</h4></div>
+      <div class="result-item"><div class="stat">+50%</div><h4>Brand visibility</h4></div>
+      <div class="result-item"><div class="stat">+20%</div><h4>Livestream engagement</h4></div>
+      <div class="result-item"><div class="stat">+25%</div><h4>Conversion rate</h4></div>
+      <div class="result-item"><div class="stat">+40%</div><h4>Advertising ROI</h4></div>
+      <div class="result-item"><div class="stat">+30%</div><h4>User satisfaction</h4></div>
+    </div>
+
+    <div class="conclusion" style="margin-top:40px;">
+      <p>My role at Groove Platforms sat at the intersection of music, technology, digital marketing, product, analytics and culture — not just getting people to see the brand, but working across the entire digital ecosystem, from artist campaigns and social growth to product QA, tracking infrastructure, advertising, partnerships and conversion optimization.</p>
+      <p>Great music marketing isn't just about reaching an audience — it's about understanding the culture they're part of. At Groove Platforms, I combined creative marketing with technical execution — <b>artist partnerships</b>, <b>cultural campaigns</b> and <b>analytics-driven advertising</b> — to grow the company's digital presence and improve the audience experience.</p>
+    </div>
+  </div>
+</section>
+
+<!-- NEXT -->
+<section id="next">
+  <div class="wrap next-case">
+    <div>
+      <div class="n-label">Keep exploring</div>
+      <div class="n-title">See more selected work</div>
+    </div>
+    <a href="index.html#projects">
+      Back to projects
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </a>
+  </div>
+</section>
+
+<footer id="contact">
+  <div class="wrap" style="display:flex; flex-wrap:wrap; justify-content:space-between; gap:16px; width:100%;">
+    <span>© 2026 Annie Medinus.</span>
+    <div style="display:flex; gap:20px;">
+      <a href="mailto:anniemedinus@gmail.com">Email</a>
+      <a href="https://www.behance.net/anniemedinus" target="_blank" rel="noreferrer">Behance</a>
+      <a href="https://www.linkedin.com/in/amedinus/" target="_blank" rel="noreferrer">LinkedIn</a>
+      <a href="https://calendly.com/anniemedinus-zs_0/30min" target="_blank" rel="noreferrer">Calendly</a>
+    </div>
+  </div>
+</footer>
+
+<script>document.body.classList.add('ready');</script>
+<!-- LIGHTBOX-INJECT -->
+<style>
+  #lb-overlay{position:fixed; inset:0; background:rgba(12,11,9,0.93); display:none; align-items:center; justify-content:center; z-index:9999; padding:48px 24px;}
+  #lb-overlay.active{display:flex;}
+  #lb-overlay img{max-width:92vw; max-height:86vh; border-radius:6px; box-shadow:0 30px 90px rgba(0,0,0,0.55); cursor:default; display:block;}
+  #lb-close{position:absolute; top:20px; right:24px; width:40px; height:40px; border-radius:50%; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.22); color:#fff; font-size:20px; line-height:1; display:flex; align-items:center; justify-content:center; cursor:pointer; font-family:sans-serif;}
+  #lb-close:hover{background:rgba(255,255,255,0.16);}
+  #lb-hint-text{position:absolute; bottom:24px; left:50%; transform:translateX(-50%); color:rgba(255,255,255,0.5); font-size:11.5px; letter-spacing:.02em; font-family:sans-serif;}
+  #lb-cursor-hint{position:fixed; pointer-events:none; z-index:9998; background:rgba(21,20,15,0.88); color:#fff; font-size:11px; padding:5px 10px; border-radius:100px; opacity:0; transform:translate(-50%,-140%); transition:opacity .12s ease; white-space:nowrap; font-family:sans-serif; letter-spacing:.01em;}
+  #lb-cursor-hint.show{opacity:1;}
+</style>
+<div id="lb-overlay">
+  <div id="lb-close">&times;</div>
+  <img id="lb-img" src="" alt="">
+  <div id="lb-hint-text">Click anywhere to close</div>
+</div>
+<div id="lb-cursor-hint">Click to enlarge</div>
+<script>
+(function(){
+  function setup(){
+    var overlay = document.getElementById('lb-overlay');
+    var lbImg = document.getElementById('lb-img');
+    var closeBtn = document.getElementById('lb-close');
+    var cursorHint = document.getElementById('lb-cursor-hint');
+    if (!overlay) return;
+
+    function openLb(src, alt){
+      lbImg.src = src;
+      lbImg.alt = alt || '';
+      overlay.classList.add('active');
+      document.body.style.overflow = 'hidden';
+      cursorHint.classList.remove('show');
+    }
+    function closeLb(){
+      overlay.classList.remove('active');
+      lbImg.src = '';
+      document.body.style.overflow = '';
+    }
+    overlay.addEventListener('click', function(e){ if (e.target !== lbImg) closeLb(); });
+    closeBtn.addEventListener('click', closeLb);
+    document.addEventListener('keydown', function(e){ if (e.key === 'Escape') closeLb(); });
+
+    function isQualified(img){
+      if (img.id === 'lb-img') return false;
+      if (img.closest('#lb-overlay')) return false;
+      if (img.closest('a')) return false;
+      var cls = img.className || '';
+      if (/\b(ig-gif|loader-chibi|fact-bg|map-img)\b/.test(cls)) return false;
+      return true;
+    }
+
+    function wireImg(img){
+      if (img.dataset.lbWired) return;
+      var w = img.naturalWidth || img.width || 0;
+      var h = img.naturalHeight || img.height || 0;
+      if (w && h && (w < 90 || h < 90)) return;
+      img.dataset.lbWired = '1';
+      img.style.cursor = 'zoom-in';
+      img.addEventListener('mouseenter', function(e){
+        cursorHint.classList.add('show');
+        cursorHint.style.left = e.clientX + 'px';
+        cursorHint.style.top = e.clientY + 'px';
+      });
+      img.addEventListener('mousemove', function(e){
+        cursorHint.style.left = e.clientX + 'px';
+        cursorHint.style.top = e.clientY + 'px';
+      });
+      img.addEventListener('mouseleave', function(){
+        cursorHint.classList.remove('show');
+      });
+      img.addEventListener('click', function(){
+        openLb(img.currentSrc || img.src, img.alt);
+      });
+    }
+
+    function scan(){
+      var imgs = document.querySelectorAll('img');
+      imgs.forEach(function(img){
+        if (!isQualified(img)) return;
+        if (img.complete && img.naturalWidth) wireImg(img);
+        else img.addEventListener('load', function(){ wireImg(img); }, { once:true });
+      });
+    }
+    scan();
+    if ('MutationObserver' in window){
+      var mo = new MutationObserver(function(){ scan(); });
+      mo.observe(document.body, { childList:true, subtree:true });
+    }
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', setup);
+  else setup();
+})();
+</script>
+<!-- /LIGHTBOX-INJECT -->
+
+<!-- INTRO-NAV-MARK-INJECT -->
+<script>
+(function(){
+  // Mark that we're leaving via an actual link click (not a browser refresh),
+  // so index.html knows to skip the welcome animation when it loads next.
+  document.addEventListener('click', function(e){
+    var a = e.target.closest ? e.target.closest('a[href]') : null;
+    if (!a) return;
+    var href = a.getAttribute('href') || '';
+    if (/(^|\/)homepage\.html(#.*)?$/.test(href)) {
+      try { sessionStorage.setItem('annieSkipLoaderNow', '1'); } catch(err) {}
+    }
+  }, true);
+})();
+</script>
+<!-- /INTRO-NAV-MARK-INJECT -->
+</body>
+</html>

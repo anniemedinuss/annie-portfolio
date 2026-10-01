@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Annie Medinus — About</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500&family=Work+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#FFFFFF; --ink:#15140F; --line:#DEDACF; --muted:#7A7568; --accent:#E8402C;
+    box-sizing:border-box;
+    padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+  }
+  *{box-sizing:inherit; margin:0; padding:0;}
+  html{scroll-behavior:smooth; scroll-padding-top:env(safe-area-inset-top,0px);}
+  body{background:var(--paper); color:var(--ink); font-family:'Work Sans',sans-serif; font-weight:400; opacity:0; transition:opacity .6s ease;}
+  body.ready{opacity:1;}
+  h1,h2,h3{font-family:'Fraunces',serif; letter-spacing:-0.02em;}
+  a{color:inherit; text-decoration:none;}
+  .wrap{max-width:1200px; margin:0 auto; padding:0 24px;}
+  @media(max-width:640px){.wrap{padding:0 18px;}}
+  section{padding:60px 0; border-top:1px solid var(--line);}
+  .label{font-size:13px; color:var(--muted); margin-bottom:18px;}
+
+  /* NAV */
+  nav{position:sticky; top:0; z-index:50; background:rgba(255,255,255,0.92); backdrop-filter:blur(6px); padding-top:env(safe-area-inset-top,0px);}
+  .nav-row{display:flex; align-items:center; justify-content:space-between; height:64px;}
+  .logo{font-family:'Fraunces',serif; font-size:20px;}
+  .nav-links{display:flex; gap:28px; font-size:14px;}
+  .nav-links a:hover{color:var(--accent);}
+  .nav-links a.active{color:var(--accent);}
+  .nav-icons{display:flex; gap:10px;}
+  .icon-btn{width:32px; height:32px; border:1px solid var(--line); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:600; transition:all .2s;}
+  .icon-btn:hover{border-color:var(--ink); background:var(--ink); color:var(--paper);}
+  .nav-links, .brand-tag{display:none;}
+  @media(min-width:760px){.nav-links{display:flex;} }
+
+  /* PAGE HEADER */
+  .about-hero{padding:64px 0 40px; border-top:none;}
+  .about-hero .label{margin-bottom:10px;}
+  .about-hero h1{font-size:clamp(32px,5vw,54px); line-height:1.12; max-width:760px;}
+
+  /* LETTER */
+  .letter{max-width:680px; margin:0 auto;}
+  .letter p{font-size:16.5px; line-height:1.8; color:var(--ink); margin-bottom:20px;}
+  .letter p:first-of-type{font-family:'Fraunces',serif; font-size:20px; font-style:italic; color:var(--muted);}
+  .letter .sign-off{font-family:'Fraunces',serif; font-size:22px; font-style:italic; margin-top:8px; color:var(--ink);}
+
+  /* WORK HISTORY / MAP */
+  .work-heading{font-family:'Fraunces',serif; font-weight:500; font-size:clamp(22px,3vw,32px); margin-bottom:4px;}
+  .work-subline{font-size:13.5px; color:var(--muted); margin-bottom:22px;}
+  .map-wrap{width:100%; border-radius:20px; border:1px solid var(--line); overflow:hidden; background:#fff; position:relative;}
+  .map-stage{position:relative;}
+  .map-img{display:block; width:100%; height:auto;}
+  .map-pin{position:absolute; transform:translate(-50%,-50%); background:none; border:none; padding:0; cursor:pointer; display:flex; align-items:center; justify-content:center;}
+  .map-pin .halo{position:absolute; width:34px; height:34px; border-radius:50%; background:var(--accent); opacity:.18; transition:opacity .25s ease, transform .2s ease;}
+  .map-pin .halo.big{width:46px; height:46px;}
+  .map-pin .core{width:14px; height:14px; border-radius:50%; background:var(--accent); border:2.5px solid #fff; box-shadow:0 2px 6px rgba(21,20,15,.3); transition:transform .2s ease;}
+  .map-pin .core.big{width:19px; height:19px;}
+  .map-pin em{position:absolute; bottom:100%; left:50%; transform:translateX(-50%); margin-bottom:6px; font-style:normal; font-family:'Work Sans',sans-serif; font-size:11px; font-weight:600; color:var(--ink); white-space:nowrap; background:rgba(255,255,255,.9); padding:2px 7px; border-radius:6px; opacity:0; transition:opacity .2s ease;}
+  .map-pin:hover em, .map-pin.active em{opacity:1;}
+  .map-pin:hover .halo{opacity:.3;}
+  .map-pin.active .core{transform:scale(1.15);}
+  .map-pin.active .halo{opacity:.34;}
+
+  /* Popup that appears beside the clicked pin */
+  .map-popup{position:absolute; width:250px; background:#fff; border:1px solid var(--line); border-radius:16px; padding:18px 20px; box-shadow:0 20px 40px rgba(21,20,15,.18); opacity:0; transform:translateY(6px) scale(.98); transition:opacity .22s ease, transform .22s ease; pointer-events:none; z-index:5;}
+  .map-popup.show{opacity:1; transform:translateY(0) scale(1); pointer-events:auto;}
+  .map-popup .popup-close{position:absolute; top:10px; right:12px; font-size:16px; line-height:1; color:var(--muted); cursor:pointer; background:none; border:none;}
+  .map-popup .popup-close:hover{color:var(--ink);}
+  .map-popup h3{font-size:15px; font-weight:600; margin-bottom:1px; font-family:'Fraunces',serif; padding-right:16px;}
+  .map-popup .loc-sub{font-size:11.5px; color:var(--muted); margin-bottom:10px;}
+  .map-popup .popup-items{max-height:260px; overflow-y:auto; display:flex; flex-direction:column; gap:12px;}
+  .map-popup .work-item{border-bottom:1px solid var(--line); padding-bottom:10px;}
+  .map-popup .work-item:last-of-type{border-bottom:none; padding-bottom:0;}
+  .map-popup .work-role{font-size:13px; font-weight:600; color:var(--ink); line-height:1.35;}
+  .map-popup .work-company{font-size:11.5px; color:var(--accent); margin:2px 0 1px;}
+  .map-popup .work-dates{font-size:10.5px; color:var(--muted);}
+
+  .cv-btn-wrap{margin-top:22px; text-align:center;}
+  .btn{display:inline-flex; align-items:center; gap:8px; background:var(--ink); color:var(--paper); border-radius:100px; padding:13px 24px; font-size:14px; transition:background .2s;}
+  .btn:hover{background:var(--accent);}
+  .cv-note{font-size:11px; color:var(--muted); text-align:center; margin-top:8px;}
+
+  /* TOOLS */
+  .tools-frame{position:relative; padding:30px 0;}
+  .tools-cloud{display:flex; flex-wrap:wrap; gap:10px; justify-content:center; align-items:center; position:relative;}
+  .tools-overlay{position:absolute; inset:0; display:flex; align-items:center; justify-content:center; pointer-events:none; z-index:3;}
+  .tools-overlay .glow{position:absolute; width:min(60%,420px); height:min(60%,220px); background:radial-gradient(closest-side, rgba(255,255,255,.92), rgba(255,255,255,0)); }
+  .tools-overlay span{position:relative; font-family:'Fraunces',serif; font-style:italic; font-weight:500; font-size:clamp(32px,5.4vw,60px); color:var(--ink); letter-spacing:-.01em;}
+  .tool-tile{display:flex; align-items:center; gap:8px; border-radius:100px; padding:8px 14px 8px 8px; font-size:12.5px; font-weight:500; color:#fff; transition:transform .2s ease, box-shadow .2s ease; animation:tileFloat ease-in-out infinite; animation-duration:var(--fdur,4.5s); animation-delay:var(--fdelay,0s);}
+  .tool-tile:hover{transform:translateY(-4px) scale(1.06) !important; box-shadow:0 10px 18px rgba(21,20,15,.2); z-index:4; animation-play-state:paused;}
+  .tool-ico{width:24px; height:24px; border-radius:7px; display:flex; align-items:center; justify-content:center; background:rgba(255,255,255,.22); font-size:10px; font-weight:700; font-family:'Fraunces',serif; flex-shrink:0;}
+  @keyframes tileFloat{0%,100%{transform:translateY(0);}50%{transform:translateY(-7px);}}
+  @media (prefers-reduced-motion: reduce){.tool-tile{animation:none;}}
+  .tools-note{margin-top:22px; font-size:11.5px; color:var(--muted); text-align:center;}
+
+  /* LOGO MARQUEE (reused) */
+  .marquee{overflow:hidden; border-top:1px solid var(--line); border-bottom:1px solid var(--line); padding:26px 0; white-space:nowrap;}
+  .marquee-track{display:inline-flex; align-items:center; gap:52px; animation:scroll 40s linear infinite;}
+  .marquee:hover .marquee-track{animation-play-state:paused;}
+  .marquee-track img{height:38px; width:auto; max-width:150px; object-fit:contain; display:block; filter:grayscale(1); opacity:.75; transition:opacity .25s ease, filter .25s ease;}
+  .marquee-track img:hover{filter:grayscale(0); opacity:1;}
+  @keyframes scroll{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+
+  /* FUN FACT — novelist */
+  .fact-media{position:relative; width:100%; aspect-ratio:21/9; border-radius:28px; overflow:hidden; background:
+      radial-gradient(circle at 15% 20%, rgba(232,64,44,.18), transparent 45%),
+      repeating-linear-gradient(0deg, rgba(255,255,255,.025) 0px, rgba(255,255,255,.025) 1px, transparent 1px, transparent 26px),
+      linear-gradient(155deg,#20201B,#0D0C09 70%);
+  }
+  @media(max-width:640px){.fact-media{aspect-ratio:4/5;}}
+  .fact-media::before{content:""; position:absolute; inset:0; background:linear-gradient(transparent 30%, rgba(0,0,0,.55)); z-index:1;}
+  .fact-copy{position:absolute; inset:0; display:flex; flex-direction:column; justify-content:space-between; align-items:flex-start; padding:28px; z-index:2;}
+  @media(min-width:640px){.fact-copy{padding:48px;}}
+  .fact-copy-bottom{max-width:600px;}
+  .fact-copy h2{color:#fff; font-size:clamp(20px,3.2vw,32px); max-width:600px; line-height:1.2;}
+  .fact-copy p{color:rgba(255,255,255,.72); font-size:14px; max-width:520px; margin-top:12px; line-height:1.6;}
+  .now-banner{display:inline-flex; align-items:center; gap:8px; font-size:13px; color:#fff; border:1px solid rgba(255,255,255,.5); border-radius:100px; padding:7px 14px;}
+  .now-dot{width:6px; height:6px; border-radius:50%; background:var(--accent); animation:pulse 1.8s infinite;}
+  @keyframes pulse{0%,100%{opacity:1;}50%{opacity:.3;}}
+  .quill{position:absolute; right:8%; top:14%; width:70px; height:70px; opacity:.5; z-index:1;}
+  @media(max-width:640px){.quill{width:46px; height:46px; right:6%; top:8%;}}
+
+  /* FOOTER */
+  footer{border-top:1px solid var(--line); padding:36px 0; display:flex; flex-wrap:wrap; justify-content:space-between; gap:16px; font-size:13px; color:var(--muted);}
+  footer a:hover{color:var(--ink);}
+
+  @media (prefers-reduced-motion: reduce){*{animation:none !important; transition:none !important;}}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap nav-row">
+    <a class="logo" href="index.html">AM.</a>
+    <div class="nav-links">
+      <a class="active" href="about.html">About</a>
+      <a href="index.html#projects">Projects</a>
+      <a href="index.html#contact">Contact</a>
+    </div>
+    <div class="nav-icons">
+      <a class="icon-btn" href="mailto:anniemedinus@gmail.com" title="Email"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></a>
+      <a class="icon-btn" href="https://www.behance.net/anniemedinus" target="_blank" rel="noreferrer" title="Behance">Bē</a>
+      <a class="icon-btn" href="https://www.linkedin.com/in/amedinus/" target="_blank" rel="noreferrer" title="LinkedIn">in</a>
+      <a class="icon-btn" href="https://calendly.com/anniemedinus-zs_0/30min" target="_blank" rel="noreferrer" title="Calendly"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 9.5h18M8 3v4M16 3v4"/><circle cx="8.5" cy="14" r="1.2" fill="currentColor" stroke="none"/></svg></a>
+    </div>
+  </div>
+</nav>
+
+<header class="about-hero">
+  <div class="wrap">
+    <span class="label">About</span>
+    <h1>Marketer, occasional coder, full-time curious person.</h1>
+  </div>
+</header>
+
+<!-- LETTER FROM ME -->
+<section id="letter">
+  <div class="wrap">
+    <span class="label">Letter from me</span>
+    <div class="letter">
+      <p>Hi,</p>
+      <p>I'm a digital marketing specialist who somehow ended up enjoying both creative ideas and spreadsheets, which, honestly, I never saw coming.</p>
+      <p>I started out in media and communications, and over the years I've worked across social media, SEO, content, digital advertising, PR, UX copywriting, analytics, and growth marketing. Somewhere along the way, I also started getting curious about the technical side of marketing, such as building dashboards, playing around with code, tracking what happens after someone clicks a link, and occasionally asking Claude to help me fix something I probably broke myself.</p>
+      <p>What I enjoy most is figuring out why something works, why it doesn't, and what we can do about it. I like turning ideas into campaigns, campaigns into data, and data into better decisions.</p>
+      <p>I'm naturally curious and a little obsessed with learning new things, and I genuinely enjoy figuring things out as I go.</p>
+      <p>This portfolio is basically a collection of a few things I've worked on, built, tested, learned from, and occasionally overthought.</p>
+      <p>Thanks for stopping by. I hope you find something interesting here.</p>
+      <p class="sign-off">— Annie</p>
+    </div>
+  </div>
+</section>
+
+<!-- WORK HISTORY MAP -->
+<section id="work-history">
+  <div class="wrap">
+    <h2 class="work-heading">Where the work happened</h2>
+    <p class="work-subline">Click a pin to see the work history.</p>
+
+    <div class="map-stage">
+      <div class="map-wrap">
+        <img class="map-img" src="media/about/worldmap.jpg" alt="World map by continent">
+        <button class="map-pin" data-loc="lagos" style="left:50%; top:60.5%;">
+          <span class="halo big"></span><span class="core big"></span>
+          <em>Lagos, NG · 7</em>
+        </button>
+        <button class="map-pin" data-loc="miami" style="left:26.5%; top:53%;">
+          <span class="halo"></span><span class="core"></span>
+          <em>Miami, US · 1</em>
+        </button>
+        <button class="map-pin" data-loc="almere" style="left:47%; top:33.5%;">
+          <span class="halo"></span><span class="core"></span>
+          <em>Almere, NL · 1</em>
+        </button>
+      </div>
+
+      <div class="map-popup" id="mapPopup">
+        <button class="popup-close" id="popupClose" aria-label="Close">&times;</button>
+        <h3 id="popupTitle"></h3>
+        <div class="loc-sub" id="popupSub"></div>
+        <div class="popup-items" id="popupItems"></div>
+      </div>
+    </div>
+
+    <div class="cv-btn-wrap">
+      <a class="btn" href="media/cv/annie-medinus-cv.pdf" download>
+        Download CV
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v13m0 0l-5-5m5 5l5-5M4 21h16"/></svg>
+      </a>
+      <div class="cv-note">Placeholder CV built from this page — swap in your own file anytime.</div>
+    </div>
+  </div>
+</section>
+
+<!-- MY TOOLS -->
+<section id="tools">
+  <div class="wrap">
+    <div class="tools-frame">
+      <div class="tools-cloud" id="toolsCloud"></div>
+      <div class="tools-overlay"><div class="glow"></div><span>My Tools</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- LOGO MARQUEE (reused) -->
+<div class="marquee">
+  <div class="marquee-track">
+    <img src="media/logos/scalearmy.png" alt="Scale Army">
+    <img src="media/logos/grooveplatforms.png" alt="Groove Platforms">
+    <img src="media/logos/udux.png" alt="uduX">
+    <img src="media/logos/poprev.png" alt="PopRev">
+    <img src="media/logos/streamingnow.png" alt="Streaming Now">
+    <img src="media/logos/bridgetune.png" alt="Bridgetune">
+    <img src="media/logos/pearmonie.png" alt="PearMonie">
+    <img src="media/logos/rentease.png" alt="Rentease">
+    <img src="media/logos/data2botsacademy.png" alt="Data2Bots Academy">
+    <img src="media/logos/dermablend.png" alt="Dermablend Professional">
+    <img src="media/logos/mtn.png" alt="MTN">
+    <img src="media/logos/chainconsults.png" alt="Chain Consults">
+    <img src="media/logos/calebella.png" alt="Calebella">
+    <img src="media/logos/afronation.png" alt="Afro Nation">
+    <img src="media/logos/honua.png" alt="Honua">
+    <img src="media/logos/moxie.png" alt="Moxie">
+    <img src="media/logos/rapidkredit.png" alt="Rapidkredit">
+    <img src="media/logos/sabipay.png" alt="Sabipay">
+    <img src="media/logos/scalearmy.png" alt="Scale Army">
+    <img src="media/logos/grooveplatforms.png" alt="Groove Platforms">
+    <img src="media/logos/udux.png" alt="uduX">
+    <img src="media/logos/poprev.png" alt="PopRev">
+    <img src="media/logos/streamingnow.png" alt="Streaming Now">
+    <img src="media/logos/bridgetune.png" alt="Bridgetune">
+    <img src="media/logos/pearmonie.png" alt="PearMonie">
+    <img src="media/logos/rentease.png" alt="Rentease">
+    <img src="media/logos/data2botsacademy.png" alt="Data2Bots Academy">
+    <img src="media/logos/dermablend.png" alt="Dermablend Professional">
+    <img src="media/logos/mtn.png" alt="MTN">
+    <img src="media/logos/chainconsults.png" alt="Chain Consults">
+    <img src="media/logos/calebella.png" alt="Calebella">
+    <img src="media/logos/afronation.png" alt="Afro Nation">
+    <img src="media/logos/honua.png" alt="Honua">
+    <img src="media/logos/moxie.png" alt="Moxie">
+    <img src="media/logos/rapidkredit.png" alt="Rapidkredit">
+    <img src="media/logos/sabipay.png" alt="Sabipay">
+  </div>
+</div>
+
+<!-- FUN FACT — novelist -->
+<section id="fun-fact">
+  <div class="wrap">
+    <div class="fact-media">
+      <svg class="quill" viewBox="0 0 64 64" fill="none" stroke="#fff" stroke-width="1.4">
+        <path d="M52 6C36 10 22 24 16 42c-2 6-3 11-3 14 3 0 8-1 14-3 18-6 32-20 36-36-6 0-11 1-11 1z"/>
+        <path d="M13 56c4-6 9-11 15-15" stroke-linecap="round"/>
+      </svg>
+      <div class="fact-copy">
+        <div class="now-banner"><span class="now-dot"></span> Fun fact</div>
+        <div class="fact-copy-bottom">
+          <h2>Outside of marketing, I'm quietly writing a novel.</h2>
+          <p>It started as a way to unplug from dashboards and deadlines — now it's a slow-burn side project with a full outline, a handful of chapters, and a plot twist I still haven't told anyone about.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer id="contact">
+  <div class="wrap" style="display:flex; flex-wrap:wrap; justify-content:space-between; gap:16px; width:100%;">
+    <span>© 2026 Annie Medinus.</span>
+    <div style="display:flex; gap:20px;">
+      <a href="mailto:anniemedinus@gmail.com">Email</a>
+      <a href="https://www.behance.net/anniemedinus" target="_blank" rel="noreferrer">Behance</a>
+      <a href="https://www.linkedin.com/in/amedinus/" target="_blank" rel="noreferrer">LinkedIn</a>
+      <a href="https://calendly.com/anniemedinus-zs_0/30min" target="_blank" rel="noreferrer">Calendly</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  document.body.classList.add('ready');
+
+  // ---- Work-history map: self-contained SVG, no external tiles/scripts ----
+  // Popup appears anchored beside whichever pin was clicked.
+  var workData = {
+    lagos: {
+      title: 'Lagos, Nigeria', sub: '7 roles',
+      items: [
+        ['Technical Digital Marketing Manager','Groove Platforms','Jan 2024 – Jun 2025'],
+        ['Digital Marketing Generalist','Chain Consults','Jan 2023 – Dec 2024'],
+        ['Copywriter / UX Content Developer','PearMonie','Jan 2024 – Nov 2024'],
+        ['Growth Marketing Manager — Product Launch','Rentease','Sep 2023 – Jan 2024'],
+        ['Digital Marketing Executive — AIM Festival','La Campagne Tropicana Beach Resort','Sep 2022 – Dec 2022'],
+        ['Digital Marketing Lead Specialist','Optiva Capital Partners','Sep 2021 – Jan 2023'],
+        ['Digital Marketing Assistant (Internship)','Xtruct Nigeria','Jun 2018 – Sep 2018']
+      ]
+    },
+    miami: {
+      title: 'Miami, Florida', sub: '1 role · remote',
+      items: [
+        ['Social Media Associate — B2B Organic','Scale Army','Jun 2025 – Present']
+      ]
+    },
+    almere: {
+      title: 'Almere, Netherlands', sub: '1 role · remote',
+      items: [
+        ['Digital Marketing Generalist','Data2Bots','Jun 2023 – Feb 2024']
+      ]
+    }
+  };
+
+  var pins = document.querySelectorAll('.map-pin');
+  var mapStage = document.querySelector('.map-stage');
+  var mapWrapEl = document.querySelector('.map-wrap');
+  var popup = document.getElementById('mapPopup');
+  var popupTitle = document.getElementById('popupTitle');
+  var popupSub = document.getElementById('popupSub');
+  var popupItems = document.getElementById('popupItems');
+  var popupClose = document.getElementById('popupClose');
+
+  function fillPopup(loc){
+    var d = workData[loc];
+    popupTitle.textContent = d.title;
+    popupSub.textContent = d.sub;
+    popupItems.innerHTML = '';
+    d.items.forEach(function(it){
+      var row = document.createElement('div');
+      row.className = 'work-item';
+      row.innerHTML = '<div class="work-role">' + it[0] + '</div><div class="work-company">' + it[1] + '</div><div class="work-dates">' + it[2] + '</div>';
+      popupItems.appendChild(row);
+    });
+  }
+
+  function positionPopup(pin){
+    // pin position is given as left/top percentages of the map box
+    var xPct = parseFloat(pin.style.left) / 100;
+    var yPct = parseFloat(pin.style.top) / 100;
+    var boxW = mapWrapEl.offsetWidth, boxH = mapWrapEl.offsetHeight;
+    var popW = 250;
+    var left = xPct * boxW + 22;
+    if (left + popW > mapStage.offsetWidth) { left = xPct * boxW - popW - 22; }
+    if (left < 0) left = 8;
+    var top = Math.max(10, yPct * boxH - 30);
+    popup.style.left = left + 'px';
+    popup.style.top = top + 'px';
+  }
+
+  pins.forEach(function(pin){
+    pin.addEventListener('click', function(){
+      var loc = pin.getAttribute('data-loc');
+      pins.forEach(function(p){ p.classList.toggle('active', p === pin); });
+      fillPopup(loc);
+      positionPopup(pin);
+      popup.classList.add('show');
+    });
+  });
+  popupClose.addEventListener('click', function(){
+    popup.classList.remove('show');
+    pins.forEach(function(p){ p.classList.remove('active'); });
+  });
+  window.addEventListener('resize', function(){
+    var activePin = document.querySelector('.map-pin.active');
+    if (activePin) positionPopup(activePin);
+  });
+
+  // ---- My Tools: a self-contained logo-style cloud (no external logo fetches) ----
+  // Each app tile carries its real brand color and a short wordmark so the grid
+  // reads like a logo wall even without pulling external icon assets.
+  var apps = [
+    ['WordPress','#21759B'],['Webflow','#4353FF'],['Framer','#0055FF'],['Carrd','#131316'],
+    ['HubSpot','#FF7A59'],['Wix','#000000'],['Squarespace','#000000'],['Figma','#A259FF'],
+    ['Google Analytics','#F9AB00'],['Google Search Console','#4285F4'],['SEMrush','#FF642D'],
+    ['Ahrefs','#FF7A00'],['Ubersuggest','#6C3CE9'],['Yoast SEO','#A61E69'],['All in One SEO','#1A9C86'],
+    ['Metrica','#FF0000'],['Keyword Surfer','#6C63FF'],['Zoho CRM','#E42527'],
+    ['Microsoft Dynamics 365','#002050'],['ManyChat','#1077F3'],['Mailchimp','#FFE01B'],
+    ['GetResponse','#00B4B0'],['Klaviyo','#000000'],['Zoho Campaign','#E42527'],
+    ['Claude Code','#D97757'],['VS Code','#007ACC'],['Vercel','#000000'],['Supabase','#3ECF8E'],
+    ['GitHub','#181717'],['Hootsuite','#143059'],['Buffer','#2C4BFF'],['Later','#26C6DA'],
+    ['Preview','#34C759'],['Zoho Social','#E42527'],['Sprout Social','#6D51D8'],
+    ['Brandwatch','#FF5C00'],['Brand24','#FFB600'],['Facebook Insights','#1877F2'],
+    ['Instagram Insights','#E4405F'],['X / Twitter Analytics','#000000'],
+    ['Adobe Photoshop','#31A8FF'],['Adobe Illustrator','#FF9A00'],['Canva','#00C4CC'],
+    ['CapCut','#000000'],['Adobe Premiere Pro','#9999FF'],['InShot','#08C669'],
+    ['PicsArt','#EF1861'],['SketchBook','#F58220'],['Jitter','#7B61FF'],
+    ['Google Ads','#4285F4'],['YouTube Ads','#FF0000'],['Meta Ads','#0866FF'],
+    ['LinkedIn Ads','#0A66C2'],['AdSense','#FABC04'],['AdMob','#4285F4'],
+    ['Apollo.io','#6E45E2'],['Sketch','#F7B500'],['Overflow','#FF3366'],
+    ['Procreate','#000000'],['Clip Studio Paint','#00A0E9'],['Plotagon','#FF6600'],
+    ['ClickUp','#7B68EE'],['Jira','#0052CC'],['Trello','#0079BF'],['Zoho Sprints','#E42527'],
+    ['Notion','#000000'],['Slack','#4A154B'],['Microsoft Teams','#6264A7'],['Zoom','#2D8CFF'],
+    ['Google Workspace','#34A853'],['StreamYard','#3A0CA3'],['HARO','#F4B400'],['PodMatch','#6C5CE7']
+  ];
+  var cloud = document.getElementById('toolsCloud');
+  function initials(name){
+    return name.replace(/[^A-Za-z0-9]/g,' ').trim().split(/\s+/).slice(0,2).map(function(w){return w[0];}).join('').toUpperCase() || '•';
+  }
+  function readableTextColor(hex){
+    var r = parseInt(hex.slice(1,3),16), g = parseInt(hex.slice(3,5),16), b = parseInt(hex.slice(5,7),16);
+    var lum = (0.299*r + 0.587*g + 0.114*b) / 255;
+    return lum > 0.62 ? '#15140F' : '#FFFFFF';
+  }
+  apps.forEach(function(a, i){
+    var tile = document.createElement('span');
+    tile.className = 'tool-tile';
+    tile.style.background = a[1];
+    tile.style.color = readableTextColor(a[1]);
+    tile.style.setProperty('--fdur', (3.6 + (i % 5) * 0.6) + 's');
+    tile.style.setProperty('--fdelay', (-(i % 7) * 0.5) + 's');
+    var ico = document.createElement('span');
+    ico.className = 'tool-ico';
+    ico.textContent = initials(a[0]);
+    tile.appendChild(ico);
+    var label = document.createElement('span');
+    label.textContent = a[0];
+    tile.appendChild(label);
+    tile.title = a[0];
+    cloud.appendChild(tile);
+  });
+</script>
+<!-- LIGHTBOX-INJECT -->
+<style>
+  #lb-overlay{position:fixed; inset:0; background:rgba(12,11,9,0.93); display:none; align-items:center; justify-content:center; z-index:9999; padding:48px 24px;}
+  #lb-overlay.active{display:flex;}
+  #lb-overlay img{max-width:92vw; max-height:86vh; border-radius:6px; box-shadow:0 30px 90px rgba(0,0,0,0.55); cursor:default; display:block;}
+  #lb-close{position:absolute; top:20px; right:24px; width:40px; height:40px; border-radius:50%; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.22); color:#fff; font-size:20px; line-height:1; display:flex; align-items:center; justify-content:center; cursor:pointer; font-family:sans-serif;}
+  #lb-close:hover{background:rgba(255,255,255,0.16);}
+  #lb-hint-text{position:absolute; bottom:24px; left:50%; transform:translateX(-50%); color:rgba(255,255,255,0.5); font-size:11.5px; letter-spacing:.02em; font-family:sans-serif;}
+  #lb-cursor-hint{position:fixed; pointer-events:none; z-index:9998; background:rgba(21,20,15,0.88); color:#fff; font-size:11px; padding:5px 10px; border-radius:100px; opacity:0; transform:translate(-50%,-140%); transition:opacity .12s ease; white-space:nowrap; font-family:sans-serif; letter-spacing:.01em;}
+  #lb-cursor-hint.show{opacity:1;}
+</style>
+<div id="lb-overlay">
+  <div id="lb-close">&times;</div>
+  <img id="lb-img" src="" alt="">
+  <div id="lb-hint-text">Click anywhere to close</div>
+</div>
+<div id="lb-cursor-hint">Click to enlarge</div>
+<script>
+(function(){
+  function setup(){
+    var overlay = document.getElementById('lb-overlay');
+    var lbImg = document.getElementById('lb-img');
+    var closeBtn = document.getElementById('lb-close');
+    var cursorHint = document.getElementById('lb-cursor-hint');
+    if (!overlay) return;
+
+    function openLb(src, alt){
+      lbImg.src = src;
+      lbImg.alt = alt || '';
+      overlay.classList.add('active');
+      document.body.style.overflow = 'hidden';
+      cursorHint.classList.remove('show');
+    }
+    function closeLb(){
+      overlay.classList.remove('active');
+      lbImg.src = '';
+      document.body.style.overflow = '';
+    }
+    overlay.addEventListener('click', function(e){ if (e.target !== lbImg) closeLb(); });
+    closeBtn.addEventListener('click', closeLb);
+    document.addEventListener('keydown', function(e){ if (e.key === 'Escape') closeLb(); });
+
+    function isQualified(img){
+      if (img.id === 'lb-img') return false;
+      if (img.closest('#lb-overlay')) return false;
+      if (img.closest('a')) return false;
+      var cls = img.className || '';
+      if (/\b(ig-gif|loader-chibi|fact-bg|map-img)\b/.test(cls)) return false;
+      return true;
+    }
+
+    function wireImg(img){
+      if (img.dataset.lbWired) return;
+      var w = img.naturalWidth || img.width || 0;
+      var h = img.naturalHeight || img.height || 0;
+      if (w && h && (w < 90 || h < 90)) return;
+      img.dataset.lbWired = '1';
+      img.style.cursor = 'zoom-in';
+      img.addEventListener('mouseenter', function(e){
+        cursorHint.classList.add('show');
+        cursorHint.style.left = e.clientX + 'px';
+        cursorHint.style.top = e.clientY + 'px';
+      });
+      img.addEventListener('mousemove', function(e){
+        cursorHint.style.left = e.clientX + 'px';
+        cursorHint.style.top = e.clientY + 'px';
+      });
+      img.addEventListener('mouseleave', function(){
+        cursorHint.classList.remove('show');
+      });
+      img.addEventListener('click', function(){
+        openLb(img.currentSrc || img.src, img.alt);
+      });
+    }
+
+    function scan(){
+      var imgs = document.querySelectorAll('img');
+      imgs.forEach(function(img){
+        if (!isQualified(img)) return;
+        if (img.complete && img.naturalWidth) wireImg(img);
+        else img.addEventListener('load', function(){ wireImg(img); }, { once:true });
+      });
+    }
+    scan();
+    if ('MutationObserver' in window){
+      var mo = new MutationObserver(function(){ scan(); });
+      mo.observe(document.body, { childList:true, subtree:true });
+    }
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', setup);
+  else setup();
+})();
+</script>
+<!-- /LIGHTBOX-INJECT -->
+
+<!-- INTRO-NAV-MARK-INJECT -->
+<script>
+(function(){
+  // Mark that we're leaving via an actual link click (not a browser refresh),
+  // so index.html knows to skip the welcome animation when it loads next.
+  document.addEventListener('click', function(e){
+    var a = e.target.closest ? e.target.closest('a[href]') : null;
+    if (!a) return;
+    var href = a.getAttribute('href') || '';
+    if (/(^|\/)homepage\.html(#.*)?$/.test(href)) {
+      try { sessionStorage.setItem('annieSkipLoaderNow', '1'); } catch(err) {}
+    }
+  }, true);
+})();
+</script>
+<!-- /INTRO-NAV-MARK-INJECT -->
+</body>
+</html>

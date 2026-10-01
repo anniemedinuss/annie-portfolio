@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Portfolio — Home</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500&family=Work+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#FFFFFF; --ink:#15140F; --line:#DEDACF; --muted:#7A7568; --accent:#E8402C;
+    box-sizing:border-box;
+    padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+  }
+  *{box-sizing:inherit; margin:0; padding:0;}
+  html{scroll-behavior:smooth; scroll-padding-top:env(safe-area-inset-top,0px);}
+  body{background:var(--paper); color:var(--ink); font-family:'Work Sans',sans-serif; font-weight:400;}
+  h1,h2,h3{font-family:'Fraunces',serif; letter-spacing:-0.02em;}
+  a{color:inherit; text-decoration:none;}
+  .wrap{max-width:1200px; margin:0 auto; padding:0 24px;}
+  @media(max-width:640px){.wrap{padding:0 18px;}}
+
+  /* NAV */
+  nav{position:sticky; top:0; z-index:50; background:rgba(255,255,255,0.92); backdrop-filter:blur(6px); padding-top:env(safe-area-inset-top,0px);}
+  .nav-row{display:flex; align-items:center; justify-content:space-between; height:64px;}
+  .logo{font-family:'Fraunces',serif; font-size:20px;}
+  .nav-links{display:flex; gap:28px; font-size:14px;}
+  .nav-links a:hover{color:var(--accent);}
+  .nav-icons{display:flex; gap:10px;}
+  .icon-btn{width:32px; height:32px; border:1px solid var(--line); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:600; transition:all .2s;}
+  .icon-btn:hover{border-color:var(--ink); background:var(--ink); color:var(--paper);}
+  .nav-links, .brand-tag{display:none;}
+  @media(min-width:760px){.nav-links{display:flex;} }
+
+  /* NOW BANNER */
+  .now-banner{display:inline-flex; align-items:center; gap:8px; font-size:13px; color:var(--muted); border:1px solid var(--line); border-radius:100px; padding:7px 14px; margin-bottom:26px;}
+  .now-dot{width:6px; height:6px; border-radius:50%; background:var(--accent); animation:pulse 1.8s infinite;}
+  @keyframes pulse{0%,100%{opacity:1;}50%{opacity:.3;}}
+
+  /* HERO */
+  .hero{padding:70px 0 60px;}
+  .hero-grid{display:grid; grid-template-columns:1fr 1fr; gap:40px; align-items:center;}
+  @media(max-width:900px){.hero-grid{grid-template-columns:1fr; gap:70px;}}
+
+  .hero-badge{display:block; color:var(--muted); font-size:14px; font-weight:500; margin-bottom:14px;}
+  .hero h1{font-size:clamp(26px,3.3vw,42px); line-height:1.24; font-weight:700; color:var(--ink); margin-bottom:16px; max-width:540px;}
+  .hero-sub{font-size:17px; color:var(--ink); margin-bottom:10px;}
+  .hero-squiggle{margin-bottom:28px; display:block; color:#E8C468;}
+  .hero-cta{display:inline-flex; align-items:center; gap:9px; background:var(--ink); color:#fff; padding:15px 26px; border-radius:100px; font-size:14px; font-weight:600; transition:background .2s;}
+  .hero-cta:hover{background:var(--accent);}
+
+  /* HERO VISUAL — phone + floating photos, matches reference layout */
+  .hero-visual{position:relative; height:420px; display:flex; align-items:center; justify-content:center;}
+  @media(max-width:900px){.hero-visual{height:400px;}}
+  @media(max-width:480px){.hero-visual{height:340px; transform:scale(0.82);}}
+
+  .float-photo{position:absolute; width:110px; height:200px; border-radius:14px; box-shadow:0 16px 30px rgba(21,20,15,.16); z-index:1; overflow:hidden; background-size:220% 220%;}
+  .float-photo img{width:100%; height:100%; object-fit:cover; display:block; transition:opacity .3s ease;}
+  .float-left{left:calc(50% - 195px); top:38%;}
+  .float-right{right:calc(50% - 200px); top:14%;}
+
+  .phone-mock{position:relative; width:212px; height:432px; background:linear-gradient(160deg,#2c2c2c,#0c0c0c); border-radius:44px; padding:6px; box-shadow:0 30px 60px rgba(21,20,15,.35), inset 0 0 0 2px rgba(255,255,255,.06); z-index:2;}
+  .phone-btn{position:absolute; background:#111;}
+  .phone-btn.vol1{left:-3px; top:86px; width:3px; height:32px; border-radius:2px 0 0 2px;}
+  .phone-btn.vol2{left:-3px; top:126px; width:3px; height:32px; border-radius:2px 0 0 2px;}
+  .phone-btn.power{right:-3px; top:104px; width:3px; height:58px; border-radius:0 2px 2px 0;}
+  .phone-screen{position:relative; width:100%; height:100%; border-radius:38px; overflow:hidden; background:url('media/phone-wallpaper.jpg') center/cover no-repeat;}
+  .phone-island{position:absolute; top:12px; left:50%; transform:translateX(-50%); width:74px; height:21px; background:#0c0c0c; border-radius:14px; z-index:5;}
+  .phone-statusbar{position:absolute; top:15px; left:0; right:0; display:flex; align-items:center; justify-content:space-between; padding:0 24px; font-size:11px; font-weight:600; color:#2a2a2a; z-index:4;}
+  .phone-statusbar svg{display:block;}
+  .phone-glare{position:absolute; inset:0; background:linear-gradient(120deg,rgba(255,255,255,.24),transparent 42%); pointer-events:none; z-index:6;}
+
+  .search-overlay{position:absolute; top:20%; left:50%; transform:translateX(-50%); background:#fff; border-radius:100px; padding:11px 18px; display:flex; align-items:center; gap:9px; font-size:12.5px; color:var(--muted); box-shadow:0 12px 26px rgba(21,20,15,.18); white-space:nowrap; z-index:7; min-width:150px;}
+  @media(max-width:480px){.search-overlay{font-size:11px; padding:9px 14px;}}
+  .search-overlay .search-typed::after{content:""; display:inline-block; width:1px; height:11px; background:var(--ink); margin-left:2px; vertical-align:-2px; animation:blink 0.9s step-end infinite;}
+  @keyframes blink{50%{opacity:0;}}
+  .search-overlay .x{margin-left:6px; color:var(--muted); font-size:12px;}
+
+  .result-card{position:absolute; top:38%; left:50%; transform:translateX(-50%); width:180px; background:#fff; border-radius:14px; overflow:hidden; box-shadow:0 20px 34px rgba(21,20,15,.22); z-index:7;}
+  @media(max-width:480px){.result-card{width:150px;}}
+  .result-img{height:92px; overflow:hidden; position:relative;}
+  .result-img-track{display:flex; width:200%; height:100%; transition:transform 1s ease;}
+  .result-slide{width:50%; height:100%; flex-shrink:0; background-size:220% 220%;}
+  .result-slide img{width:100%; height:100%; object-fit:cover; display:block;}
+  .result-text{overflow:hidden; position:relative;}
+  .result-text-track{display:flex; width:200%; transition:transform 1s ease;}
+  .result-text-slide{width:50%; flex-shrink:0; padding:9px 11px;}
+  .result-text-slide strong{display:block; font-size:12.5px;}
+  .result-text-slide span{font-size:10.5px; color:var(--muted);}
+
+  /* FEATURE / PRESS */
+  .feature-card{display:grid; grid-template-columns:0.9fr 1.3fr; gap:32px; align-items:center; border:1px solid var(--line); border-radius:24px; padding:28px;}
+  @media(max-width:760px){.feature-card{grid-template-columns:1fr;}}
+  .feature-img{aspect-ratio:1/1; border-radius:16px; background:linear-gradient(160deg,#EAD9D2,#C9BFA3);}
+  .feature-card h2{font-size:clamp(22px,3vw,32px); line-height:1.18; margin:14px 0 12px;}
+  .feature-card p{color:var(--muted); font-size:15px; line-height:1.6; margin-bottom:20px; max-width:480px;}
+  .feature-card p.feature-note{color:var(--muted); font-size:12px; margin:12px 0 0; max-width:480px;}
+  .btn{display:inline-flex; align-items:center; background:var(--ink); color:var(--paper); border-radius:100px; padding:12px 22px; font-size:14px; transition:background .2s;}
+  .btn:hover{background:var(--accent);}
+  .btn-outline{display:inline-flex; align-items:center; border:1px solid var(--ink); color:var(--ink); border-radius:100px; padding:11px 22px; font-size:14px; transition:all .2s;}
+  .btn-outline:hover{background:var(--ink); color:var(--paper);}
+  .fact-copy .now-banner{color:#fff; border-color:rgba(255,255,255,.5);}
+
+  /* SECTION LABEL */
+  .label{font-size:13px; color:var(--muted); margin-bottom:18px;}
+  .projects-heading{font-family:'Fraunces',serif; font-weight:500; font-style:italic; font-size:clamp(22px,3vw,32px); margin-bottom:4px; color:var(--ink);}
+  .projects-subline{font-size:13.5px; color:var(--muted); margin-bottom:22px;}
+  section{padding:60px 0; border-top:1px solid var(--line);}
+
+  /* TESTIMONIALS */
+  .t-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:24px;}
+  .t-card{border:1px solid var(--line); border-radius:4px; padding:26px; display:flex; gap:16px;}
+  .t-avatar{width:48px; height:48px; border-radius:50%; background:linear-gradient(160deg,#E3DED0,#B7C4AC); flex-shrink:0; overflow:hidden;}
+  .t-avatar img{width:100%; height:100%; object-fit:cover; display:block;}
+  .t-name{font-size:14px; font-weight:600; margin-bottom:2px;}
+  .t-role{font-size:13px; color:var(--muted); margin-bottom:10px;}
+  .t-quote{font-size:14px; line-height:1.55; margin-bottom:12px;}
+  .t-li{width:30px; height:30px; border-radius:50%; border:1px solid var(--line); display:inline-flex; align-items:center; justify-content:center; font-size:11px; font-weight:600;}
+  .t-li:hover{background:var(--ink); color:var(--paper); border-color:var(--ink);}
+
+  /* LOGO MARQUEE */
+  .marquee{overflow:hidden; border-top:1px solid var(--line); border-bottom:1px solid var(--line); padding:26px 0; white-space:nowrap;}
+  .marquee-track{display:inline-flex; align-items:center; gap:52px; animation:scroll 40s linear infinite;}
+  .marquee:hover .marquee-track{animation-play-state:paused;}
+  .marquee-track img{height:38px; width:auto; max-width:150px; object-fit:contain; display:block; filter:grayscale(1); opacity:.75; transition:opacity .25s ease, filter .25s ease;}
+  .marquee-track img:hover{filter:grayscale(0); opacity:1;}
+  @keyframes scroll{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+
+  /* PROJECTS — Instagram post style, all five together */
+  .p-grid{display:grid; grid-template-columns:repeat(5,1fr); gap:16px;}
+  @media(max-width:1000px){.p-grid{grid-template-columns:repeat(3,1fr);}}
+  @media(max-width:680px){.p-grid{grid-template-columns:repeat(2,1fr);}}
+  @media(max-width:460px){.p-grid{grid-template-columns:1fr; max-width:380px; margin:0 auto;}}
+  .ig-post{position:relative; display:block; cursor:pointer; border:1.5px solid var(--ink); border-radius:16px 18px 15px 17px; overflow:hidden; background:#fff; transition:transform .25s ease, box-shadow .25s ease;}
+  .ig-post:hover{transform:translateY(-8px); box-shadow:0 18px 32px rgba(21,20,15,.14);}
+  .ig-header{position:absolute; top:0; left:0; right:0; display:flex; align-items:center; gap:8px; padding:10px 12px; background:linear-gradient(rgba(255,255,255,.97),rgba(255,255,255,.85) 65%,transparent); opacity:0; transform:translateY(-6px); transition:opacity .25s ease, transform .25s ease; z-index:2;}
+  .ig-post:hover .ig-header{opacity:1; transform:translateY(0);}
+  .ig-avatar{width:24px; height:24px; border-radius:50%; background:#fff; flex-shrink:0; overflow:hidden; border:1px solid var(--line);}
+  .ig-avatar img{width:100%; height:100%; object-fit:cover; display:block;}
+  .ig-header span{font-size:11px; font-weight:600;}
+  .ig-media{aspect-ratio:1/1; position:relative; overflow:hidden; background:#EDEBE4;}
+  .ig-media img{position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:center; display:block;}
+  .ig-gif{opacity:0; transition:opacity .25s ease;}
+  .ig-post.iv-active .ig-gif{opacity:1;}
+  .ig-actions{display:flex; align-items:center; justify-content:space-between; padding:10px 12px 2px; color:var(--ink);}
+  .ig-actions svg{display:block;}
+  .ig-actions-left{display:flex; gap:12px;}
+  .ig-caption{padding:2px 12px 14px; font-size:12px; color:var(--muted); line-height:1.5;}
+  .ig-caption b{color:var(--ink); font-weight:600; font-size:13px;}
+  .ig-caption .ig-role-line{display:block; color:var(--ink); font-size:12px; margin-top:1px;}
+  .ig-caption .ig-skills-cap{display:block; font-style:italic; color:var(--muted); font-size:10.5px; margin-top:5px; line-height:1.4;}
+
+  /* FUN FACT — same treatment as hero */
+  .fact-media{position:relative; width:100%; aspect-ratio:21/9; border-radius:28px; overflow:hidden; background:linear-gradient(160deg,#E3DED0,#B7C4AC);}
+  @media(max-width:640px){.fact-media{aspect-ratio:4/5;}}
+  .fact-media::before{content:""; position:absolute; inset:0; background:linear-gradient(transparent 35%, rgba(21,20,15,.75)); z-index:1;}
+  .fact-media::after{content:""; position:absolute; inset:0; background:rgba(21,20,15,.35); z-index:1;}
+  .fact-bg{position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:center 25%; filter:brightness(.65) saturate(1.05);}
+  .fact-copy{position:absolute; inset:0; display:flex; align-items:flex-end; padding:28px; z-index:2;}
+  @media(min-width:640px){.fact-copy{padding:48px;}}
+  .fact-copy h2{color:#fff; font-size:clamp(20px,3.2vw,32px); max-width:560px; line-height:1.2; margin-top:12px;}
+
+  /* FEEDBACK MOCKUP */
+  .fb-wrap{position:relative; max-width:640px; margin:60px auto 80px;}
+  .fb-video{width:100%; aspect-ratio:16/10; object-fit:cover; border-radius:10px; border:1px solid var(--line); display:block; background:#EDEBE4;}
+  .fb-note{position:absolute; width:220px; background:#fff; border:1px solid var(--line); border-radius:8px; padding:6px; box-shadow:0 10px 24px rgba(21,20,15,.10); animation:float 4s ease-in-out infinite;}
+  .fb-note img{width:100%; height:auto; display:block; border-radius:4px;}
+  .n1{top:-4%; left:-17%; animation-delay:0s;}
+  .n2{top:24%; right:-19%; animation-delay:.7s;}
+  .n3{top:56%; left:-20%; animation-delay:1.4s;}
+  .n4{bottom:-6%; right:-16%; animation-delay:2.1s;}
+  .n5{top:-12%; left:26%; animation-delay:2.8s;}
+  .n6{bottom:-12%; right:22%; animation-delay:3.5s;}
+  @keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-8px);}}
+  @media(max-width:900px){.n5,.n6{display:none;}}
+  @media(max-width:640px){.fb-note{position:static; width:auto; display:block; margin:10px auto 0; max-width:320px; animation:none;}}
+
+  /* FOOTER */
+  footer{border-top:1px solid var(--line); padding:36px 0; display:flex; flex-wrap:wrap; justify-content:space-between; gap:16px; font-size:13px; color:var(--muted);}
+  footer a:hover{color:var(--ink);}
+
+  /* LOADER */
+  html.skip-loader #loader{display:none !important;}
+  html.skip-loader body > *:not(#loader){filter:none !important; opacity:1 !important;}
+  .loader{position:fixed; inset:0; z-index:999; background:var(--paper); display:flex; flex-direction:column; align-items:center; justify-content:center; transition:opacity .7s ease, visibility .7s ease;}
+  .loader.hide{opacity:0; visibility:hidden; pointer-events:none;}
+  .loader-inner{transition:transform .6s ease;}
+  .loader.raise .loader-inner{transform:translateY(-16px);}
+  .loader-stack{display:grid;}
+  .loader-stage{grid-area:1/1; display:flex; flex-direction:column; align-items:center; opacity:0; transform:translateY(6px); transition:opacity .5s ease, transform .5s ease; pointer-events:none;}
+  .loader-stage.active{opacity:1; transform:translateY(0); pointer-events:auto;}
+
+  /* Stage 1 — HELLOO with eyes that look left/right, then a smile */
+  .loader-word{display:flex; align-items:center; font-family:'Fraunces',serif; font-weight:600; font-size:clamp(46px,11vw,110px); color:var(--ink);}
+  .lw-eyes{display:inline-flex; gap:0.12em; margin-left:0.05em;}
+  .eye{width:0.58em; height:0.58em; border-radius:50%; background:var(--paper); border:2.5px solid var(--ink); position:relative; box-sizing:border-box;}
+  .eye::after{content:""; position:absolute; width:32%; height:32%; background:var(--ink); border-radius:50%; top:50%; left:50%; transform:translate(-50%,-50%); animation:look 2.6s ease-in-out infinite;}
+  @keyframes look{0%,18%{transform:translate(-50%,-50%);} 32%,48%{transform:translate(-78%,-50%);} 62%,78%{transform:translate(-22%,-50%);} 100%{transform:translate(-50%,-50%);}}
+  .loader-mouth{opacity:0; margin-top:10px; transition:opacity .5s ease;}
+  .stage-hello.smile .loader-mouth{opacity:1;}
+
+  /* Stage 2 — chibi pops in and waves */
+  .loader-chibi-wrap{position:relative; width:clamp(160px,26vw,250px);}
+  .loader-chibi{width:100%; height:auto; display:block;}
+  .stage-chibi.active .loader-chibi-wrap{animation:chibiPop .6s cubic-bezier(.34,1.56,.64,1) both;}
+  @keyframes chibiPop{ from{opacity:0; transform:scale(.25) translateY(40px);} to{opacity:1; transform:scale(1) translateY(0);} }
+  .loader-welcome{margin-top:20px; font-family:'Fraunces',serif; font-style:italic; font-weight:500; font-size:clamp(17px,2.4vw,22px); color:var(--ink); letter-spacing:.01em; min-height:1.4em;}
+  .wc-cursor{display:inline-block; margin-left:2px; animation:blink 1s step-end infinite;}
+  @keyframes blink{50%{opacity:0;}}
+
+  /* HERO ENTRANCE — plays once the loader clears */
+  .hero-visual .phone-mock{opacity:0; transform:translateY(46px) scale(.94); transition:opacity .9s ease, transform .9s cubic-bezier(.2,.8,.2,1);}
+  .hero-visual.reveal .phone-mock{opacity:1; transform:translateY(0) scale(1);}
+  .hero-visual .float-photo{opacity:0; transform:translateY(26px); transition:opacity .8s ease .18s, transform .8s ease .18s;}
+  .hero-visual.reveal .float-photo{opacity:1; transform:translateY(0);}
+
+  /* REST OF PAGE — blurs into view after the loader clears */
+  body > *:not(#loader){filter:blur(18px); opacity:0; transition:filter 1.1s ease, opacity 1.1s ease;}
+  body.loaded > *:not(#loader){filter:blur(0); opacity:1;}
+
+  @media (prefers-reduced-motion: reduce){*{animation:none !important; transition:none !important;} body > *:not(#loader){filter:none; opacity:1;} .hero-visual .phone-mock, .hero-visual .float-photo{opacity:1; transform:none;}}
+
+  /* CONTACT */
+  .contact-grid{display:grid; grid-template-columns:0.85fr 1.15fr; gap:56px; align-items:start;}
+  @media(max-width:860px){.contact-grid{grid-template-columns:1fr; gap:32px;}}
+  .contact-photo{width:100%; max-width:380px; border-radius:20px; aspect-ratio:3/4; object-fit:cover; display:block; border:1px solid var(--line);}
+  .contact-heading{font-size:clamp(26px,3.6vw,40px); line-height:1.15; margin-bottom:14px; font-weight:500;}
+  .contact-sub{color:var(--muted); font-size:15px; line-height:1.6; max-width:420px; margin-bottom:28px;}
+  .contact-form{display:flex; flex-direction:column; gap:18px; max-width:460px;}
+  .cf-row{display:flex; flex-direction:column; gap:6px;}
+  .cf-row label{font-size:11.5px; text-transform:uppercase; letter-spacing:.06em; color:var(--muted);}
+  .cf-row input, .cf-row textarea{font-family:'Work Sans',sans-serif; font-size:15px; padding:12px 14px; border:1px solid var(--line); border-radius:10px; background:var(--paper); color:var(--ink); resize:vertical;}
+  .cf-row input:focus, .cf-row textarea:focus{outline:none; border-color:var(--ink);}
+  .cf-submit{align-self:flex-start; border:1px solid var(--ink); background:var(--ink); color:var(--paper); border-radius:100px; padding:12px 26px; font-size:14px; cursor:pointer; transition:opacity .2s; font-family:'Work Sans',sans-serif;}
+  .cf-submit:hover{opacity:.85;}
+  .cf-submit:disabled{opacity:.5; cursor:default;}
+  .cf-status{font-size:13px;}
+  .cf-status.ok{color:#2E7D32;}
+  .cf-status.err{color:var(--accent);}
+</style>
+</head>
+<body>
+<script>
+  // The welcome animation should replay on an actual browser refresh/first visit,
+  // but stay skipped when simply navigating back to the homepage from a project
+  // (a link click or the browser's back/forward button). A plain refresh never
+  // sets the click-flag below and is never a back/forward traversal, so it
+  // always falls through to showing the animation.
+  (function(){
+    var navEntries = (window.performance && performance.getEntriesByType) ? performance.getEntriesByType('navigation') : [];
+    var navType = navEntries.length ? navEntries[0].type
+      : (window.performance && performance.navigation && performance.navigation.type === 2 ? 'back_forward' : 'navigate');
+    var alreadyPlayed = sessionStorage.getItem('annieIntroPlayed');
+    var cameFromLink = sessionStorage.getItem('annieSkipLoaderNow') === '1';
+    try { sessionStorage.removeItem('annieSkipLoaderNow'); } catch(err) {}
+    var skip = !!alreadyPlayed && (cameFromLink || navType === 'back_forward');
+    window.__skipIntro = skip;
+    if (skip) document.documentElement.classList.add('skip-loader');
+  })();
+</script>
+
+<div id="loader" class="loader">
+  <div class="loader-inner">
+    <div class="loader-stack">
+      <div class="loader-stage stage-hello active" id="stageHello">
+        <div class="loader-word">
+          <span>HELL</span>
+          <span class="lw-eyes"><span class="eye"></span><span class="eye"></span></span>
+        </div>
+        <svg class="loader-mouth" width="60" height="26" viewBox="0 0 60 26"><path d="M6 6 Q30 24 54 3" stroke="#15140F" stroke-width="4" fill="none" stroke-linecap="round"/></svg>
+      </div>
+      <div class="loader-stage stage-chibi" id="stageChibi">
+        <div class="loader-chibi-wrap">
+          <img class="loader-chibi" src="media/loader/chibi-wave.webp" alt="Annie's chibi waving hello">
+        </div>
+        <p class="loader-welcome"><span id="welcome-typed"></span><span class="wc-cursor">|</span></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<nav>
+  <div class="wrap nav-row">
+    <a class="logo" href="index.html">AM.</a>
+    <div class="nav-links">
+      <a href="about.html">About</a>
+      <a href="#projects">Projects</a>
+      <a href="#contact">Contact</a>
+    </div>
+    <div class="nav-icons">
+      <a class="icon-btn" href="mailto:anniemedinus@gmail.com" title="Email"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></a>
+      <a class="icon-btn" href="https://www.behance.net/anniemedinus" target="_blank" rel="noreferrer" title="Behance">Bē</a>
+      <a class="icon-btn" href="https://www.linkedin.com/in/amedinus/" target="_blank" rel="noreferrer" title="LinkedIn">in</a>
+      <a class="icon-btn" href="https://calendly.com/anniemedinus-zs_0/30min" target="_blank" rel="noreferrer" title="Calendly"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 9.5h18M8 3v4M16 3v4"/><circle cx="8.5" cy="14" r="1.2" fill="currentColor" stroke="none"/></svg></a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="hero-grid">
+      <div>
+        <span class="hero-badge">Agree or disagree?</span>
+        <h1>Sales is a one night stand, marketing is dating, and branding is the marriage that makes your company unforgettable.</h1>
+        <p class="hero-sub">Let's connect the dots!</p>
+        <svg class="hero-squiggle" width="180" height="14" viewBox="0 0 180 14"><path d="M2 8c6-8 12-8 18 0s12 8 18 0 12-8 18 0 12 8 18 0 12-8 18 0 12 8 18 0 12-8 18 0 12 8 18 0 12-8 18 0" stroke="currentColor" stroke-width="3" fill="none" stroke-linecap="round"/></svg>
+        <br>
+        <a class="hero-cta" href="mailto:anniemedinus@gmail.com">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C11.4 21 3 12.6 3 3c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.4 0 .8-.3 1.1L6.6 10.8z"/></svg>
+          Get In Touch
+        </a>
+      </div>
+
+      <div class="hero-visual">
+        <div class="float-photo float-left bg3">
+          <img src="media/destinations/canada.jpg" alt="Old Port, Montreal, Canada">
+        </div>
+        <div class="phone-mock">
+          <div class="phone-btn vol1"></div>
+          <div class="phone-btn vol2"></div>
+          <div class="phone-btn power"></div>
+          <div class="phone-screen">
+            <div class="phone-statusbar">
+              <span>9:41</span>
+              <span style="display:flex; gap:4px; align-items:center;">
+                <svg width="13" height="9" viewBox="0 0 16 11" fill="currentColor"><rect x="0" y="7" width="2.5" height="4" rx="0.5"/><rect x="4.5" y="5" width="2.5" height="6" rx="0.5"/><rect x="9" y="3" width="2.5" height="8" rx="0.5"/><rect x="13.5" y="0" width="2.5" height="11" rx="0.5"/></svg>
+                <svg width="13" height="9" viewBox="0 0 16 12" fill="currentColor"><path d="M8 9.5a1.3 1.3 0 1 1 0 2.6 1.3 1.3 0 0 1 0-2.6zM4.8 6.6a4.5 4.5 0 0 1 6.4 0l-1.4 1.4a2.5 2.5 0 0 0-3.6 0L4.8 6.6zM2 3.8a8.4 8.4 0 0 1 12 0L12.6 5.2a6.4 6.4 0 0 0-9.2 0L2 3.8z"/></svg>
+              </span>
+            </div>
+            <div class="phone-island"></div>
+            <div class="phone-glare"></div>
+          </div>
+        </div>
+        <div class="search-overlay">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+          <span class="search-typed" id="search-typed"></span>
+          <span class="x">✕</span>
+        </div>
+        <div class="result-card">
+          <div class="result-img">
+            <div class="result-img-track" id="result-img-track">
+              <div class="result-slide bg1"><img src="media/destinations/paris.jpg" alt="Paris, France"></div>
+              <div class="result-slide bg2"><img src="media/destinations/seoul.jpg" alt="Seoul, South Korea"></div>
+            </div>
+          </div>
+          <div class="result-text">
+            <div class="result-text-track" id="result-text-track">
+              <div class="result-text-slide"><strong>Paris</strong><span>France</span></div>
+              <div class="result-text-slide"><strong>Seoul</strong><span>South Korea</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="float-photo float-right bg5">
+          <img src="media/destinations/bangkok.jpg" alt="Grand Palace, Bangkok, Thailand">
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section style="border-top:none;">
+  <div class="wrap">
+    <div class="feature-card">
+      <img class="feature-img" src="media/feature-work.png" alt="Current work" style="width:100%; object-fit:cover;">
+      <div>
+        <span class="now-banner"><span class="now-dot"></span>New update — current work</span>
+        <h2>CEO of Scale Army, in conversation with Jim Hamel</h2>
+        <p>An interview on how my career journey has shaped how I lead today.</p>
+        <a class="btn" href="https://medium.com/authority-magazine/alex-kruger-of-scale-army-how-my-career-journey-has-shaped-how-i-lead-today-6b0697e867a0" target="_blank" rel="noreferrer">Read the full interview</a>
+        <p class="feature-note"><em>Note: this placement was secured through HARO outreach from me</em></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="about">
+  <div class="wrap">
+    <p class="label">What people say</p>
+    <div class="t-grid">
+      <div class="t-card">
+        <div class="t-avatar"><img src="media/testimonials/adeola.png" alt="Adeola Adelakun"></div>
+        <div>
+          <p class="t-name">Adeola Adelakun</p>
+          <p class="t-role">Co-Founder / CFO — PearMonie</p>
+          <p class="t-quote">"Since joining PearMonie, your expertise as a copywriter and UX Content Developer has made a tremendous impact on our brand. Your attention to detail, creativity, strategic thinking has improved our messaging and user experience. You've been an invaluable asset to our team and we truly appreciate the dedication you've brought to every project."</p>
+          <a class="t-li" href="https://www.linkedin.com/in/adeola-a-mba-psm%E2%84%A2-i-0847a9362/" target="_blank" rel="noreferrer" title="LinkedIn" aria-label="LinkedIn">in</a>
+        </div>
+      </div>
+      <div class="t-card">
+        <div class="t-avatar"><img src="media/testimonials/moshood.png" alt="Moshood Okuniyi"></div>
+        <div>
+          <p class="t-name">Moshood Okuniyi</p>
+          <p class="t-role">Marketing Lead — Data2Bots</p>
+          <p class="t-quote">"Working with Annie has been a truly enlightening experience. She is highly knowledgeable and consistently proactive in her approach to work. Annie regularly goes above and beyond to achieve company goals and demonstrates versatility in media management. Additionally, she is eager to learn and continually improve her skills. Overall, my experience working with Annie has been exceptional."</p>
+          <a class="t-li" href="https://www.linkedin.com/in/emkayjunior/" target="_blank" rel="noreferrer" title="LinkedIn" aria-label="LinkedIn">in</a>
+        </div>
+      </div>
+      <div class="t-card">
+        <div class="t-avatar"><img src="media/testimonials/chukwudi.png" alt="Chukwudi"></div>
+        <div>
+          <p class="t-name">Chukwudi</p>
+          <p class="t-role">Human Resources Manager — Groove Platform</p>
+          <p class="t-quote">"Annie's line managers consistently had great things to say about her work. This was especially evident during the MTN campaign, which came through exceptionally well across the media. Her execution, attention to detail, and ability to deliver made a strong impression. Overall, the feedback on Annie's work was simply amazing."</p>
+          <a class="t-li" href="https://www.linkedin.com/in/chukwudi-u-3992131b0/" target="_blank" rel="noreferrer" title="LinkedIn" aria-label="LinkedIn">in</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="marquee">
+  <div class="marquee-track">
+    <img src="media/logos/scalearmy.png" alt="Scale Army">
+    <img src="media/logos/grooveplatforms.png" alt="Groove Platforms">
+    <img src="media/logos/udux.png" alt="uduX">
+    <img src="media/logos/poprev.png" alt="PopRev">
+    <img src="media/logos/streamingnow.png" alt="Streaming Now">
+    <img src="media/logos/bridgetune.png" alt="Bridgetune">
+    <img src="media/logos/pearmonie.png" alt="PearMonie">
+    <img src="media/logos/rentease.png" alt="Rentease">
+    <img src="media/logos/data2botsacademy.png" alt="Data2Bots Academy">
+    <img src="media/logos/dermablend.png" alt="Dermablend Professional">
+    <img src="media/logos/mtn.png" alt="MTN">
+    <img src="media/logos/chainconsults.png" alt="Chain Consults">
+    <img src="media/logos/calebella.png" alt="Calebella">
+    <img src="media/logos/afronation.png" alt="Afro Nation">
+    <img src="media/logos/honua.png" alt="Honua">
+    <img src="media/logos/moxie.png" alt="Moxie">
+    <img src="media/logos/rapidkredit.png" alt="Rapidkredit">
+    <img src="media/logos/sabipay.png" alt="Sabipay">
+    <img src="media/logos/scalearmy.png" alt="Scale Army">
+    <img src="media/logos/grooveplatforms.png" alt="Groove Platforms">
+    <img src="media/logos/udux.png" alt="uduX">
+    <img src="media/logos/poprev.png" alt="PopRev">
+    <img src="media/logos/streamingnow.png" alt="Streaming Now">
+    <img src="media/logos/bridgetune.png" alt="Bridgetune">
+    <img src="media/logos/pearmonie.png" alt="PearMonie">
+    <img src="media/logos/rentease.png" alt="Rentease">
+    <img src="media/logos/data2botsacademy.png" alt="Data2Bots Academy">
+    <img src="media/logos/dermablend.png" alt="Dermablend Professional">
+    <img src="media/logos/mtn.png" alt="MTN">
+    <img src="media/logos/chainconsults.png" alt="Chain Consults">
+    <img src="media/logos/calebella.png" alt="Calebella">
+    <img src="media/logos/afronation.png" alt="Afro Nation">
+    <img src="media/logos/honua.png" alt="Honua">
+    <img src="media/logos/moxie.png" alt="Moxie">
+    <img src="media/logos/rapidkredit.png" alt="Rapidkredit">
+    <img src="media/logos/sabipay.png" alt="Sabipay">
+  </div>
+</div>
+
+<section id="projects">
+  <div class="wrap">
+    <h2 class="projects-heading">Selected work</h2>
+    <p class="projects-subline">Click to view.</p>
+    <div class="p-grid">
+      <a class="ig-post" href="scalearmy.html">
+        <div class="ig-header">
+          <div class="ig-avatar"><img src="media/avatars/scalearmy-avatar.png" alt="Scale Army logo"></div><span>Scale Army</span>
+        </div>
+        <div class="ig-media">
+          <img src="media/projects/scalearmy-poster.jpg" alt="Scale Army">
+          <img class="ig-gif" data-src="media/projects/scalearmy.gif" alt="">
+        </div>
+        <div class="ig-actions">
+          <div class="ig-actions-left">
+            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 20s-7-4.35-9.5-8.5C.5 7.5 3 4 6.5 4c2 0 3.5 1.2 4.5 2.7C12 5.2 13.5 4 15.5 4 19 4 21.5 7.5 21.5 11.5 19 15.65 12 20 12 20z"/></svg>
+            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M21 11.5a8.5 8.5 0 0 1-8.5 8.5c-1.15 0-2.24-.22-3.24-.63L3 21l1.63-4.26A8.44 8.44 0 0 1 3.5 11.5 8.5 8.5 0 0 1 12 3a8.5 8.5 0 0 1 9 8.5z"/></svg>
+            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4 20-7z"/></svg>
+          </div>
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 3h12a1 1 0 0 1 1 1v17l-7-4-7 4V4a1 1 0 0 1 1-1z"/></svg>
+        </div>
+        <p class="ig-caption"><b>Scale Army</b><span class="ig-role-line">B2B Social Media Associate (Organic)</span><i class="ig-skills-cap">Organic Growth · SEO · HubSpot · Claude Code · Vercel · Supabase etc</i></p>
+      </a>
+      <a class="ig-post" href="groove.html">
+        <div class="ig-header">
+          <div class="ig-avatar"><img src="media/avatars/groove-avatar.png" alt="Groove Platforms logo"></div><span>Groove Platform</span>
+        </div>
+        <div class="ig-media">
+          <img src="media/projects/groove-poster.jpg" alt="Groove Platforms">
+          <img class="ig-gif" data-src="media/projects/groove.gif" alt="">
+        </div>
+        <div class="ig-actions">
+          <div class="ig-actions-left">
+            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 20s-7-4.35-9.5-8.5C.5 7.5 3 4 6.5 4c2 0 3.5 1.2 4.5 2.7C12 5.2 13.5 4 15.5 4 19 4 21.5 7.5 21.5 11.5 19 15.65 12 20 12 20z"/></svg>
+            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M21 11.5a8.5 8.5 0 0 1-8.5 8.5c-1.15 0-2.24-.22-3.24-.63L3 21l1.63-4.26A8.44 8.44 0 0 1 3.5 11.5 8.5 8.5 0 0 1 12 3a8.5 8.5 0 0 1 9 8.5z"/></svg>
+            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4 20-7z"/></svg>
+          </div>
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 3h12a1 1 0 0 1 1 1v17l-7-4-7 4V4a1 1 0 0 1 1-1z"/></svg>
+        </div>
+        <p class="ig-caption"><b>Groove Platforms</b><span class="ig-role-line">Technical Digital Marketing Manager</span><i class="ig-skills-cap">Social Media · Google Tag Manager · Meta Pixel · AdMob · TestFlight · Figma etc</i></p>
+      </a>
+      <a class="ig-post" href="pearmonie.html">
+        <div class="ig-header">
+          <div class="ig-avatar"><img src="media/avatars/pearmonie-avatar.png" alt="PearMonie logo"></div><span>PearMonie</span>
+        </div>
+        <div class="ig-media">
+          <img src="media/projects/pearmonie-poster.jpg" alt="Pearmonie">
+          <img class="ig-gif" data-src="media/projects/pearmonie.gif" alt="">
+        </div>
+        <div class="ig-actions">
+          <div class="ig-actions-left">
+            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 20s-7-4.35-9.5-8.5C.5 7.5 3 4 6.5 4c2 0 3.5 1.2 4.5 2.7C12 5.2 13.5 4 15.5 4 19 4 21.5 7.5 21.5 11.5 19 15.65 12 20 12 20z"/></svg>
+            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M21 11.5a8.5 8.5 0 0 1-8.5 8.5c-1.15 0-2.24-.22-3.24-.63L3 21l1.63-4.26A8.44 8.44 0 0 1 3.5 11.5 8.5 8.5 0 0 1 12 3a8.5 8.5 0 0 1 9 8.5z"/></svg>
+            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4 20-7z"/></svg>
+          </div>
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 3h12a1 1 0 0 1 1 1v17l-7-4-7 4V4a1 1 0 0 1 1-1z"/></svg>
+        </div>
+        <p class="ig-caption"><b>PearMonie</b><span class="ig-role-line">Copywriter / UX Content Developer</span><i class="ig-skills-cap">UX Copywriting · SEO · Google Analytics · CRM Copy · Content Strategy etc</i></p>
+      </a>
+      <a class="ig-post" href="rentease.html">
+        <div class="ig-header">
+          <div class="ig-avatar"><img src="media/avatars/rentease-avatar.png" alt="Rentease logo"></div><span>Rentease</span>
+        </div>
+        <div class="ig-media">
+          <img src="media/projects/rentease-poster.jpg" alt="RentEase">
+          <img class="ig-gif" data-src="media/projects/rentease.gif" alt="">
+        </div>
+        <div class="ig-actions">
+          <div class="ig-actions-left">
+            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 20s-7-4.35-9.5-8.5C.5 7.5 3 4 6.5 4c2 0 3.5 1.2 4.5 2.7C12 5.2 13.5 4 15.5 4 19 4 21.5 7.5 21.5 11.5 19 15.65 12 20 12 20z"/></svg>
+            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M21 11.5a8.5 8.5 0 0 1-8.5 8.5c-1.15 0-2.24-.22-3.24-.63L3 21l1.63-4.26A8.44 8.44 0 0 1 3.5 11.5 8.5 8.5 0 0 1 12 3a8.5 8.5 0 0 1 9 8.5z"/></svg>
+            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4 20-7z"/></svg>
+          </div>
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 3h12a1 1 0 0 1 1 1v17l-7-4-7 4V4a1 1 0 0 1 1-1z"/></svg>
+        </div>
+        <p class="ig-caption"><b>Rentease</b><span class="ig-role-line">Growth Marketing Manager — Product Launch</span><i class="ig-skills-cap">Growth Marketing · Google Ads · SEO · Retargeting · Google Tag Manager · Meta Pixel etc</i></p>
+      </a>
+      <a class="ig-post" href="data2bots.html">
+        <div class="ig-header">
+          <div class="ig-avatar"><img src="media/avatars/data2bots-avatar.png" alt="Data2Bots logo"></div><span>Data2Bots</span>
+        </div>
+        <div class="ig-media">
+          <img src="media/projects/data2bots-poster.jpg" alt="Data2Bots">
+          <img class="ig-gif" data-src="media/projects/data2bots.gif" alt="">
+        </div>
+        <div class="ig-actions">
+          <div class="ig-actions-left">
+            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 20s-7-4.35-9.5-8.5C.5 7.5 3 4 6.5 4c2 0 3.5 1.2 4.5 2.7C12 5.2 13.5 4 15.5 4 19 4 21.5 7.5 21.5 11.5 19 15.65 12 20 12 20z"/></svg>
+            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M21 11.5a8.5 8.5 0 0 1-8.5 8.5c-1.15 0-2.24-.22-3.24-.63L3 21l1.63-4.26A8.44 8.44 0 0 1 3.5 11.5 8.5 8.5 0 0 1 12 3a8.5 8.5 0 0 1 9 8.5z"/></svg>
+            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4 20-7z"/></svg>
+          </div>
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 3h12a1 1 0 0 1 1 1v17l-7-4-7 4V4a1 1 0 0 1 1-1z"/></svg>
+        </div>
+        <p class="ig-caption"><b>Data2Bots</b><span class="ig-role-line">Digital Marketing Generalist</span><i class="ig-skills-cap">Email Marketing · GetResponse · Google Analytics · Lead Generation · PPC etc</i></p>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="fact-media">
+      <img class="fact-bg" src="media/funfact/fashion.jpg" alt="Fashion piece design">
+      <div class="fact-copy">
+        <div>
+          <span class="now-banner"><span class="now-dot"></span>Fun fact</span>
+          <h2>Outside of marketing, I design fashion pieces.</h2>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <p class="label">More of my website designs</p>
+    <div class="fb-wrap">
+      <video class="fb-video" src="media/video/floating-gallery.mp4" autoplay loop muted playsinline></video>
+      <div class="fb-note n1"><img src="media/feedback/clean_f1.png" alt="Behance feedback"></div>
+      <div class="fb-note n2"><img src="media/feedback/clean_f2.png" alt="Behance feedback"></div>
+      <div class="fb-note n3"><img src="media/feedback/clean_f3.png" alt="Behance feedback"></div>
+      <div class="fb-note n4"><img src="media/feedback/clean_f4.png" alt="Behance feedback"></div>
+      <div class="fb-note n5"><img src="media/feedback/clean_f5.png" alt="Behance feedback"></div>
+      <div class="fb-note n6"><img src="media/feedback/clean_f6.png" alt="Behance feedback"></div>
+    </div>
+    <div style="text-align:center; margin-top:28px;">
+      <a class="btn-outline" href="https://www.behance.net/anniemedinus" target="_blank" rel="noreferrer">See more</a>
+    </div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="wrap">
+    <div class="contact-grid">
+      <img class="contact-photo" src="media/contact/annie-contact.jpg" alt="Annie Medinus">
+      <div>
+        <p class="label">Get in touch</p>
+        <h2 class="contact-heading">Let's work <em style="font-style:italic;">together</em>.</h2>
+        <p class="contact-sub">Have a project in mind, a role to fill, or just want to say hello? Send a note below and I'll get back to you.</p>
+        <form class="contact-form" id="contactForm" action="https://formsubmit.co/ajax/anniemedinus@gmail.com" method="POST">
+          <input type="text" name="_honey" style="display:none;" tabindex="-1" autocomplete="off">
+          <input type="hidden" name="_subject" value="New message from your portfolio">
+          <input type="hidden" name="_template" value="table">
+          <input type="hidden" name="_captcha" value="false">
+          <div class="cf-row">
+            <label for="cf-name">Name</label>
+            <input type="text" id="cf-name" name="Name" required>
+          </div>
+          <div class="cf-row">
+            <label for="cf-email">Email</label>
+            <input type="email" id="cf-email" name="Email" required>
+          </div>
+          <div class="cf-row">
+            <label for="cf-message">Message</label>
+            <textarea id="cf-message" name="Message" rows="5" required></textarea>
+          </div>
+          <div style="display:flex; align-items:center; gap:14px;">
+            <button type="submit" class="cf-submit" id="cfSubmitBtn">Send message</button>
+            <span class="cf-status" id="cfStatus"></span>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap" style="display:flex; flex-wrap:wrap; justify-content:space-between; gap:16px; width:100%;">
+    <span>© 2026 Annie Medinus.</span>
+    <div style="display:flex; gap:20px;">
+      <a href="mailto:anniemedinus@gmail.com">Email</a>
+      <a href="https://www.behance.net/anniemedinus" target="_blank" rel="noreferrer">Behance</a>
+      <a href="https://www.linkedin.com/in/amedinus/" target="_blank" rel="noreferrer">LinkedIn</a>
+      <a href="https://calendly.com/anniemedinus-zs_0/30min" target="_blank" rel="noreferrer">Calendly</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var form = document.getElementById('contactForm');
+  if (!form) return;
+  var btn = document.getElementById('cfSubmitBtn');
+  var status = document.getElementById('cfStatus');
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    btn.disabled = true;
+    btn.textContent = 'Sending…';
+    status.textContent = '';
+    status.className = 'cf-status';
+    fetch(form.action, {
+      method: 'POST',
+      headers: { 'Accept': 'application/json' },
+      body: new FormData(form)
+    }).then(function(res){
+      if (res.ok) {
+        form.reset();
+        status.textContent = "Thanks — your message is on its way.";
+        status.className = 'cf-status ok';
+        btn.textContent = 'Send message';
+        btn.disabled = false;
+      } else {
+        throw new Error('Request failed');
+      }
+    }).catch(function(){
+      status.textContent = "Something went wrong — please email anniemedinus@gmail.com directly.";
+      status.className = 'cf-status err';
+      btn.textContent = 'Send message';
+      btn.disabled = false;
+    });
+  });
+})();
+</script>
+
+<script>
+  // Selected-work cards: freeze on the poster frame, play the real GIF from the start
+  // as soon as the card scrolls into view (no hover needed).
+  function ivPlay(card){
+    var gif = card.querySelector('.ig-gif');
+    if (!gif) return;
+    gif.src = gif.dataset.src + '?t=' + Date.now();
+    card.classList.add('iv-active');
+  }
+  function ivStop(card){
+    var gif = card.querySelector('.ig-gif');
+    if (!gif) return;
+    gif.removeAttribute('src');
+    card.classList.remove('iv-active');
+  }
+  (function(){
+    var posts = document.querySelectorAll('.ig-post');
+    if (!posts.length) return;
+    if (!('IntersectionObserver' in window)){
+      posts.forEach(ivPlay);
+      return;
+    }
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        if (entry.isIntersecting) ivPlay(entry.target);
+        else ivStop(entry.target);
+      });
+    }, { threshold: 0.35 });
+    posts.forEach(function(post){ io.observe(post); });
+  })();
+
+  window.addEventListener('load', function () {
+    var loader = document.getElementById('loader');
+    var heroVisual = document.querySelector('.hero-visual');
+    var stageHello = document.getElementById('stageHello');
+    var stageChibi = document.getElementById('stageChibi');
+    var welcomeTyped = document.getElementById('welcome-typed');
+    var welcomePhrase = 'Welcome to my portfolio';
+
+    // Decision was already made before paint (see inline script at top of body),
+    // so a refresh replays the intro while a same-session link/back navigation skips it.
+    var skipIntro = !!window.__skipIntro;
+    var introMul = skipIntro ? 0 : 1;
+
+    function typeWelcome(){
+      var i = 0;
+      welcomeTyped.textContent = '';
+      var iv = setInterval(function(){
+        welcomeTyped.textContent = welcomePhrase.slice(0, i + 1);
+        i++;
+        if (i >= welcomePhrase.length) clearInterval(iv);
+      }, 45);
+    }
+
+    // Stage 1 — HELLOO, eyes look left/right, then a smile appears.
+    setTimeout(function(){ stageHello.classList.add('smile'); }, 900 * introMul);
+
+    // Stage 2 — swap to the chibi popping in and waving, then type the welcome line.
+    var chibiImg = document.querySelector('.loader-chibi');
+    setTimeout(function(){
+      stageHello.classList.remove('active');
+      stageChibi.classList.add('active');
+      // restart her wave clip from the first frame so it plays in sync with the pop-in
+      if (chibiImg) {
+        var src = chibiImg.getAttribute('src').split('?')[0];
+        chibiImg.setAttribute('src', src + '?t=' + Date.now());
+      }
+    }, 2300 * introMul);
+    setTimeout(typeWelcome, 3000 * introMul);
+
+    // Loader lifts away, the hero phone animates in, and the page blurs into view.
+    setTimeout(function(){ loader.classList.add('raise'); }, 5000 * introMul);
+    setTimeout(function(){
+      loader.classList.add('hide');
+      document.body.classList.add('loaded');
+      if (heroVisual) heroVisual.classList.add('reveal');
+      // Remember that the intro has played so it won't replay later this session.
+      sessionStorage.setItem('annieIntroPlayed', '1');
+    }, 5700 * introMul);
+
+    // Typewriter effect for the phone search bar
+    var typedEl = document.getElementById('search-typed');
+    var phrase = 'Where is your brand?';
+    function typeOut(){
+      var i = 0;
+      typedEl.textContent = '';
+      var iv = setInterval(function(){
+        typedEl.textContent = phrase.slice(0, i + 1);
+        i++;
+        if (i >= phrase.length) clearInterval(iv);
+      }, 55);
+    }
+    setTimeout(typeOut, 5300 * introMul);
+
+    // Destination carousel — two slides always hold real content, so the
+    // incoming photo is already loaded and in place before each swipe starts.
+    var destinations = [
+      { city: 'Paris', country: 'France', img: 'media/destinations/paris.jpg', bg: 'bg1' },
+      { city: 'Seoul', country: 'South Korea', img: 'media/destinations/seoul.jpg', bg: 'bg2' },
+      { city: 'New York', country: 'United States', img: 'media/destinations/newyork.jpg', bg: 'bg3' },
+      { city: 'London', country: 'United Kingdom', img: 'media/destinations/london.jpg', bg: 'bg4' }
+    ];
+
+    var imgTrack = document.getElementById('result-img-track');
+    var textTrack = document.getElementById('result-text-track');
+    var imgSlides = imgTrack ? imgTrack.children : [];
+    var textSlides = textTrack ? textTrack.children : [];
+    var idx = 0; // index currently shown in slide 0 (Paris to start, matches markup)
+
+    function fillSlide(imgSlideEl, textSlideEl, d){
+      imgSlideEl.className = 'result-slide ' + d.bg;
+      imgSlideEl.querySelector('img').src = d.img;
+      imgSlideEl.querySelector('img').alt = d.city + ', ' + d.country;
+      textSlideEl.querySelector('strong').textContent = d.city;
+      textSlideEl.querySelector('span').textContent = d.country;
+    }
+
+    function swipeDestination(){
+      // slide both tracks left by one slide-width — slide 1's real content
+      // is already sitting right there, so nothing is ever blank
+      imgTrack.style.transition = 'transform 1s ease';
+      textTrack.style.transition = 'transform 1s ease';
+      imgTrack.style.transform = 'translateX(-50%)';
+      textTrack.style.transform = 'translateX(-50%)';
+
+      setTimeout(function(){
+        // snap both tracks back to the start with no transition (invisible, since
+        // slide 0 now gets relabeled with what slide 1 was showing)
+        imgTrack.style.transition = 'none';
+        textTrack.style.transition = 'none';
+        imgTrack.style.transform = 'translateX(0)';
+        textTrack.style.transform = 'translateX(0)';
+
+        idx = (idx + 1) % destinations.length;
+        var nextIdx = (idx + 1) % destinations.length;
+        fillSlide(imgSlides[0], textSlides[0], destinations[idx]);
+        fillSlide(imgSlides[1], textSlides[1], destinations[nextIdx]);
+
+        // force reflow so the instant snap-back registers before the next transition
+        void imgTrack.offsetWidth;
+      }, 1000);
+    }
+
+    setTimeout(function(){
+      setInterval(swipeDestination, 4000);
+    }, 6000);
+  });
+</script>
+<!-- LIGHTBOX-INJECT -->
+<style>
+  #lb-overlay{position:fixed; inset:0; background:rgba(12,11,9,0.93); display:none; align-items:center; justify-content:center; z-index:9999; padding:48px 24px;}
+  #lb-overlay.active{display:flex;}
+  #lb-overlay img{max-width:92vw; max-height:86vh; border-radius:6px; box-shadow:0 30px 90px rgba(0,0,0,0.55); cursor:default; display:block;}
+  #lb-close{position:absolute; top:20px; right:24px; width:40px; height:40px; border-radius:50%; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.22); color:#fff; font-size:20px; line-height:1; display:flex; align-items:center; justify-content:center; cursor:pointer; font-family:sans-serif;}
+  #lb-close:hover{background:rgba(255,255,255,0.16);}
+  #lb-hint-text{position:absolute; bottom:24px; left:50%; transform:translateX(-50%); color:rgba(255,255,255,0.5); font-size:11.5px; letter-spacing:.02em; font-family:sans-serif;}
+  #lb-cursor-hint{position:fixed; pointer-events:none; z-index:9998; background:rgba(21,20,15,0.88); color:#fff; font-size:11px; padding:5px 10px; border-radius:100px; opacity:0; transform:translate(-50%,-140%); transition:opacity .12s ease; white-space:nowrap; font-family:sans-serif; letter-spacing:.01em;}
+  #lb-cursor-hint.show{opacity:1;}
+</style>
+<div id="lb-overlay">
+  <div id="lb-close">&times;</div>
+  <img id="lb-img" src="" alt="">
+  <div id="lb-hint-text">Click anywhere to close</div>
+</div>
+<div id="lb-cursor-hint">Click to enlarge</div>
+<script>
+(function(){
+  function setup(){
+    var overlay = document.getElementById('lb-overlay');
+    var lbImg = document.getElementById('lb-img');
+    var closeBtn = document.getElementById('lb-close');
+    var cursorHint = document.getElementById('lb-cursor-hint');
+    if (!overlay) return;
+
+    function openLb(src, alt){
+      lbImg.src = src;
+      lbImg.alt = alt || '';
+      overlay.classList.add('active');
+      document.body.style.overflow = 'hidden';
+      cursorHint.classList.remove('show');
+    }
+    function closeLb(){
+      overlay.classList.remove('active');
+      lbImg.src = '';
+      document.body.style.overflow = '';
+    }
+    overlay.addEventListener('click', function(e){ if (e.target !== lbImg) closeLb(); });
+    closeBtn.addEventListener('click', closeLb);
+    document.addEventListener('keydown', function(e){ if (e.key === 'Escape') closeLb(); });
+
+    function isQualified(img){
+      if (img.id === 'lb-img') return false;
+      if (img.closest('#lb-overlay')) return false;
+      if (img.closest('a')) return false;
+      var cls = img.className || '';
+      if (/\b(ig-gif|loader-chibi|fact-bg|map-img)\b/.test(cls)) return false;
+      return true;
+    }
+
+    function wireImg(img){
+      if (img.dataset.lbWired) return;
+      var w = img.naturalWidth || img.width || 0;
+      var h = img.naturalHeight || img.height || 0;
+      if (w && h && (w < 90 || h < 90)) return;
+      img.dataset.lbWired = '1';
+      img.style.cursor = 'zoom-in';
+      img.addEventListener('mouseenter', function(e){
+        cursorHint.classList.add('show');
+        cursorHint.style.left = e.clientX + 'px';
+        cursorHint.style.top = e.clientY + 'px';
+      });
+      img.addEventListener('mousemove', function(e){
+        cursorHint.style.left = e.clientX + 'px';
+        cursorHint.style.top = e.clientY + 'px';
+      });
+      img.addEventListener('mouseleave', function(){
+        cursorHint.classList.remove('show');
+      });
+      img.addEventListener('click', function(){
+        openLb(img.currentSrc || img.src, img.alt);
+      });
+    }
+
+    function scan(){
+      var imgs = document.querySelectorAll('img');
+      imgs.forEach(function(img){
+        if (!isQualified(img)) return;
+        if (img.complete && img.naturalWidth) wireImg(img);
+        else img.addEventListener('load', function(){ wireImg(img); }, { once:true });
+      });
+    }
+    scan();
+    if ('MutationObserver' in window){
+      var mo = new MutationObserver(function(){ scan(); });
+      mo.observe(document.body, { childList:true, subtree:true });
+    }
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', setup);
+  else setup();
+})();
+</script>
+<!-- /LIGHTBOX-INJECT -->
+
+<!-- INTRO-NAV-MARK-INJECT -->
+<script>
+(function(){
+  // Mark that we're leaving via an actual link click (not a browser refresh),
+  // so index.html knows to skip the welcome animation when it loads next.
+  document.addEventListener('click', function(e){
+    var a = e.target.closest ? e.target.closest('a[href]') : null;
+    if (!a) return;
+    var href = a.getAttribute('href') || '';
+    if (/(^|\/)homepage\.html(#.*)?$/.test(href)) {
+      try { sessionStorage.setItem('annieSkipLoaderNow', '1'); } catch(err) {}
+    }
+  }, true);
+})();
+</script>
+<!-- /INTRO-NAV-MARK-INJECT -->
+</body>
+</html>
