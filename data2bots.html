@@ -405,7 +405,7 @@
     var a = e.target.closest ? e.target.closest('a[href]') : null;
     if (!a) return;
     var href = a.getAttribute('href') || '';
-    if (/(^|\/)homepage\.html(#.*)?$/.test(href)) {
+    if (/(^|\/)index\.html(#.*)?$/.test(href)) {
       try { sessionStorage.setItem('annieSkipLoaderNow', '1'); } catch(err) {}
     }
   }, true);
